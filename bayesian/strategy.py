@@ -12,7 +12,7 @@ from utility import ProbabilityOfImprovement, ExpectedImprovement, UpperConfiden
 
 from base.logging import *
 from base.util import as_function, as_numeric_function, slice_dict
-from base_io import DefaultIO, Serializable
+from model.base_io import DefaultIO, Serializable
 
 
 mu_priors = {
