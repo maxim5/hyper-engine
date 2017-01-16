@@ -43,7 +43,6 @@ class HyperTuner(object):
       hyper_params = self.parsed.instantiate(point)
       solver = self.solver_generator(hyper_params)
 
-      tf_reset_all()
       accuracy = solver.train()
 
       previous_max = max(self.strategy.values) if len(self.strategy.values) > 0 else 0
@@ -59,7 +58,4 @@ class HyperTuner(object):
       if self.timeout:
         time.sleep(self.timeout)
 
-
-def tf_reset_all():
-  import tensorflow as tf
-  tf.reset_default_graph()
+      solver.terminate()

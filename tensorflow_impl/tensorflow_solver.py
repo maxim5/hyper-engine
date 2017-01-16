@@ -27,6 +27,10 @@ class TensorflowSolver(BaseSolver):
     results = self._load(directory=self._model_io.load_dir, log_level=1)
     return results.get('validation_accuracy', 0)
 
+  def terminate(self):
+    super(TensorflowSolver, self).terminate()
+    tf.reset_default_graph()
+
   def on_best_accuracy(self, accuracy, eval_result):
     super(TensorflowSolver, self).on_best_accuracy(accuracy, eval_result)
     if accuracy >= self._save_accuracy_limit:

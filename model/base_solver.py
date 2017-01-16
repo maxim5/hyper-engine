@@ -75,6 +75,9 @@ class BaseSolver(object):
     augmented = call(self._augmentation, x)
     return augmented if augmented is not None else x
 
+  def terminate(self):
+    pass
+
   def on_best_accuracy(self, accuracy, eval_result):
     pass
 
