@@ -50,8 +50,22 @@ Implements the following [methods](https://en.wikipedia.org/wiki/Bayesian_optimi
 - Probability of improvement (See H. J. Kushner. A new method of locating the maximum of an arbitrary multipeak curve in the presence of noise. J. Basic Engineering, 86:97–106, 1964.)
 - Expected Improvement (See J. Mockus, V. Tiesis, and A. Zilinskas. Toward Global Optimization, volume 2, chapter The Application of Bayesian Methods for Seeking the Extremum, pages 117–128. Elsevier, 1978)
 - [Upper Confidence Bound](http://www.jmlr.org/papers/volume3/auer02a/auer02a.pdf)
-- [Mixed/Portfolio strategy](http://mlg.eng.cam.ac.uk/hoffmanm/papers/hoffman:2011.pdf)
+- [Mixed / Portfolio strategy](http://mlg.eng.cam.ac.uk/hoffmanm/papers/hoffman:2011.pdf)
 
 Uses [RBF kernel](https://en.wikipedia.org/wiki/Radial_basis_function_kernel) by default, but can be extended.
 
 Finally, can use naive random search.
+
+Installation
+------------
+
+*Hyper-Engine* is designed to be ML-platform agnostic, but currently provides only simple [TensorFlow](https://github.com/tensorflow/tensorflow) binding.
+
+Dependencies:
+- NumPy
+- SciPy
+- TensorFlow (optional)
+- PyPlot (optional)
+
+Compatibility:
+- Python 2.7 (3.5 is coming)
