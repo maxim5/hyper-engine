@@ -10,14 +10,10 @@ Features
 ```python
 hyper_params_spec = {
   'init_sigma': 10**spec.uniform(-1.5, -1),
-
   'optimizer': {
-    'learning_rate': 10**spec.uniform(-3.2, -2.8),
-    'beta1': 0.9,
-    'beta2': 0.999,
+    'learning_rate': 10**spec.uniform(-3.5, -2.5),
     'epsilon': 1e-8,
   },
-
   'conv': {
     'filters': [[3, 3, spec.choice(range(32, 48))],
                 [3, 3, spec.choice(range(72, 96))],
@@ -45,10 +41,12 @@ The optimizer randomly chose the negative mode as more promising.
 ![1D Bayesian Optimization](https://github.com/maxim5/hyper-engine/raw/master/.images/figure_1.png "Bayesian Optimization")
 
 **Example 2**: the 2-dimensional function `f(x, y) = (x + y) / ((x - 1) ** 2 - sin(y) + 2)` (black curve) on [0, 9]<sup>2</sup> square.
-Red dots represent each trial, the Gaussian Process mean and standard deviations are not present for simplicity.
+Red dots represent each trial, the Gaussian Process mean and standard deviations are not shown for simplicity.
 Note that to achieve the maximum both variables must be picked accurately.
 ![2D Bayesian Optimization](https://github.com/maxim5/hyper-engine/raw/master/.images/figure_2-1.png "Bayesian Optimization")
 ![2D Bayesian Optimization](https://github.com/maxim5/hyper-engine/raw/master/.images/figure_2-2.png "Bayesian Optimization")
+
+The code for these and others examples is [here](https://github.com/maxim5/hyper-engine/blob/master/bayesian/strategy_test.py).
 
 Bayesian Optimization
 ---------------------
