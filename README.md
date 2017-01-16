@@ -38,10 +38,17 @@ depending on the problem complexity and available computational resources.
 *Hyper-Engine* provides the algorithm to explore the space of parameters efficiently, focus on the most promising areas,
 thus converge to the maximum as fast as possible.
 
-Example: optimizing the true function `f(x) = x * sin(x)` (black curve).
+**Example 1**: the true function is 1-dimensional - `f(x) = x * sin(x)` (black curve) on [-10, 10] interval.
 Red dots represent each trial, red curve is the [Gaussian Process](https://en.wikipedia.org/wiki/Gaussian_process) mean,
 blue curve is the mean plus or minus one standard deviation.
+The optimizer randomly chose the negative mode as more promising.
 ![1D Bayesian Optimization](https://github.com/maxim5/hyper-engine/raw/master/.images/figure_1.png "Bayesian Optimization")
+
+**Example 2**: the 2-dimensional function `f(x, y) = (x + y) / ((x - 1) ** 2 - sin(y) + 2)` (black curve) on [0, 9]<sup>2</sup> square.
+Red dots represent each trial, the Gaussian Process mean and standard deviations are not present for simplicity.
+Note that to achieve the maximum both variables must be picked accurately.
+![2D Bayesian Optimization](https://github.com/maxim5/hyper-engine/raw/master/.images/figure_2-1.png "Bayesian Optimization")
+![2D Bayesian Optimization](https://github.com/maxim5/hyper-engine/raw/master/.images/figure_2-2.png "Bayesian Optimization")
 
 Bayesian Optimization
 ---------------------
