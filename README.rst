@@ -2,18 +2,27 @@
 Hyper-parameters Tuning for Machine Learning
 ============================================
 
-A toolbox for `Model selection <https://en.wikipedia.org/wiki/Hyperparameter_optimization>`__
-
-- `Installation <#installation>`__
+- `Overview <#overview>`__
+    - `About <#about>`__
+    - `Installation <#installation>`__
 - `Features <#features>`__
     - `Straight-forward specification <#specification>`__
     - `Exploration-exploitation trade-off <#exploration-exploitation>`__
     - `Learning Curve Estimation <#learning-curve>`__
 - `Bayesian Optimization <#bayesian-optimization>`__
 
-------------
+--------
+Overview
+--------
+
+About
+=====
+
+*Hyper-Engine* is a toolbox for `Model selection <https://en.wikipedia.org/wiki/Hyperparameter_optimization>`__.
+It aims to provide most state-of-the-art techniques via intuitive interface and with minimum dependencies.
+
 Installation
-------------
+============
 
 Dependencies:
 
@@ -73,7 +82,7 @@ The optimizer randomly chose the negative mode as more promising.
     :alt: 1D Bayesian Optimization
     :align: center
 
-**Example 2**: the 2-dimensional function ``f(x, y) = (x + y) / ((x - 1) ** 2 - sin(y) + 2)`` (black curve) on [0, 9]x[0,9] square.
+**Example 2**: the 2-dimensional function ``f(x, y) = (x + y) / ((x - 1) ** 2 - sin(y) + 2)`` (black surface) on [0,9]x[0,9] square.
 Red dots represent each trial, the Gaussian Process mean and standard deviations are not shown for simplicity.
 Note that to achieve the maximum both variables must be picked accurately.
 
@@ -93,7 +102,7 @@ Learning Curve Estimation
 =========================
 
 *Hyper-Engine* can monitor the model performance during the training and stop early if it's learning too slowly.
-This is done via *learning curve prediction*. Note that this method is compatible with Bayesian Optimization, since
+This is done via *learning curve prediction*. Note that this technique is compatible with Bayesian Optimization, since
 it estimates the model accuracy after full training - this value can be safely used to update Gaussian Process parameters.
 
 Example code:
