@@ -1,6 +1,31 @@
-# Hyper-parameters Tuning for Machine Learning
+============================================
+Hyper-parameters Tuning for Machine Learning
+============================================
 
 A toolbox for [Model selection](https://en.wikipedia.org/wiki/Hyperparameter_optimization)
+
+- `Installation <#installation>`__
+- `Features <#features>`__
+  - `Straight-forward specification <#specification>`__
+  - `Exploration-exploitation trade-off <#exploration-exploitation>`__
+  - `Learning Curve Estimation <#learning-curve>`__
+- `Bayesian Optimization <#bayesian-optimization>`__
+
+
+Installation
+------------
+
+Dependencies:
+- NumPy
+- SciPy
+- TensorFlow (optional)
+- PyPlot (optional)
+
+Compatibility:
+- Python 2.7 (3.5 is coming)
+
+*Hyper-Engine* is designed to be ML-platform agnostic, but currently provides only simple [TensorFlow](https://github.com/tensorflow/tensorflow) binding.
+
 
 Features
 --------
@@ -34,7 +59,7 @@ depending on the problem complexity and available computational resources.
 *Hyper-Engine* provides the algorithm to explore the space of parameters efficiently, focus on the most promising areas,
 thus converge to the maximum as fast as possible.
 
-**Example 1**: the true function is 1-dimensional - `f(x) = x * sin(x)` (black curve) on [-10, 10] interval.
+**Example 1**: the true function is 1-dimensional, `f(x) = x * sin(x)` (black curve) on [-10, 10] interval.
 Red dots represent each trial, red curve is the [Gaussian Process](https://en.wikipedia.org/wiki/Gaussian_process) mean,
 blue curve is the mean plus or minus one standard deviation.
 The optimizer randomly chose the negative mode as more promising.
@@ -48,6 +73,22 @@ Note that to achieve the maximum both variables must be picked accurately.
 
 The code for these and others examples is [here](https://github.com/maxim5/hyper-engine/blob/master/bayesian/strategy_test.py).
 
+* Learning Curve Estimation
+
+*Hyper-Engine* can monitor the model performance during the training and stop early if it's learning too slowly.
+This is done via *learning curve prediction*. Note that this method is compatible with Bayesian Optimization, since
+it estimates the model accuracy after full training - this value can be safely used to update Gaussian Process parameters.
+
+Example code:
+```python
+curve_params = {
+  'burn_in': 30,                # burn-in period: 30 models 
+  'min_input_size': 5,          # start predicting after 5 epochs
+  'value_limit': 0.80,          # stop if the estimate is less than 80% with high probability
+}
+curve_predictor = LinearCurvePredictor(**curve_params)
+```
+
 Bayesian Optimization
 ---------------------
 
@@ -60,17 +101,3 @@ Implements the following [methods](https://en.wikipedia.org/wiki/Bayesian_optimi
 Uses [RBF kernel](https://en.wikipedia.org/wiki/Radial_basis_function_kernel) by default, but can be extended.
 
 Finally, can use naive random search.
-
-Installation
-------------
-
-*Hyper-Engine* is designed to be ML-platform agnostic, but currently provides only simple [TensorFlow](https://github.com/tensorflow/tensorflow) binding.
-
-Dependencies:
-- NumPy
-- SciPy
-- TensorFlow (optional)
-- PyPlot (optional)
-
-Compatibility:
-- Python 2.7 (3.5 is coming)
