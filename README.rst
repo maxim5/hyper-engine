@@ -11,7 +11,7 @@ A toolbox for `Model selection <https://en.wikipedia.org/wiki/Hyperparameter_opt
     - `Learning Curve Estimation <#learning-curve>`__
 - `Bayesian Optimization <#bayesian-optimization>`__
 
-
+------------
 Installation
 ------------
 
@@ -28,11 +28,12 @@ Compatibility:
 
 *Hyper-Engine* is designed to be ML-platform agnostic, but currently provides only simple `TensorFlow <https://github.com/tensorflow/tensorflow>`__ binding.
 
-
+--------
 Features
 --------
 
-* Straight-forward specification
+Straight-forward specification
+==============================
 
 .. code-block:: python
 
@@ -53,7 +54,8 @@ Features
       },
     }
 
-* Exploration-exploitation trade-off 
+Exploration-exploitation trade-off
+==================================
 
 Machine learning model selection is expensive.
 Each model evaluation requires full training from scratch and may take minutes to hours to days, 
@@ -87,7 +89,8 @@ Note that to achieve the maximum both variables must be picked accurately.
 
 The code for these and others examples is `here <https://github.com/maxim5/hyper-engine/blob/master/bayesian/strategy_test.py>`__.
 
-* Learning Curve Estimation
+Learning Curve Estimation
+=========================
 
 *Hyper-Engine* can monitor the model performance during the training and stop early if it's learning too slowly.
 This is done via *learning curve prediction*. Note that this method is compatible with Bayesian Optimization, since
@@ -104,6 +107,7 @@ Example code:
     }
     curve_predictor = LinearCurvePredictor(**curve_params)
 
+---------------------
 Bayesian Optimization
 ---------------------
 
