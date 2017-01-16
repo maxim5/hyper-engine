@@ -6,9 +6,9 @@ Hyper-parameters Tuning for Machine Learning
     - `About <#about>`__
     - `Installation <#installation>`__
 - `Features <#features>`__
-    - `Straight-forward specification <#specification>`__
-    - `Exploration-exploitation trade-off <#exploration-exploitation>`__
-    - `Learning Curve Estimation <#learning-curve>`__
+    - `Straight-forward specification <#straight-forward-specification>`__
+    - `Exploration-exploitation trade-off <#exploration-exploitation-trade-off>`__
+    - `Learning Curve Estimation <#learning-curve-estimation>`__
 - `Bayesian Optimization <#bayesian-optimization>`__
 
 --------
