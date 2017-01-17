@@ -116,6 +116,16 @@ Example code:
     }
     curve_predictor = LinearCurvePredictor(**curve_params)
 
+Currently there is only one implementation of the predictor, ``LinearCurvePredictor``, 
+which is very efficient, but requires relatively large burn-in period to predict model accuracy without flaws.
+
+Note that learning curves can be reused between different models and works quite well for the burn-in,
+so it's recommended to serialize and load curve data via ``io_save_dir`` and ``io_load_dir`` parameters.
+
+See also the following paper:
+`Speeding up Automatic Hyperparameter Optimization of Deep Neural Networks
+by Extrapolation of Learning Curves <http://aad.informatik.uni-freiburg.de/papers/15-IJCAI-Extrapolation_of_Learning_Curves.pdf>`__
+
 ---------------------
 Bayesian Optimization
 ---------------------
