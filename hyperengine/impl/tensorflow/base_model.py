@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-__author__ = "maxim"
+__author__ = 'maxim'
 
 
 class BaseModel(object):
