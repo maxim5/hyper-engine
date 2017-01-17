@@ -5,12 +5,11 @@ __author__ = 'maxim'
 
 import numpy as np
 
+from ..base import *
+
 from kernel import RadialBasisFunction
 from maximizer import MonteCarloUtilityMaximizer
 from utility import ProbabilityOfImprovement, ExpectedImprovement, UpperConfidenceBound, RandomPoint
-from base.logging import *
-from hyperengine.base.util import as_function, as_numeric_function, slice_dict
-from hyperengine.model.base_io import DefaultIO, Serializable
 
 
 mu_priors = {

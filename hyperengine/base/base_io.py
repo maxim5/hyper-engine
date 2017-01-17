@@ -7,9 +7,8 @@ import os
 
 import numpy as np
 
-from base.logging import *
-from hyperengine.base.util import str_to_dict, dict_to_str
-
+from .logging import *
+from .util import str_to_dict, dict_to_str
 
 class BaseIO(object):
   def __init__(self, **params):

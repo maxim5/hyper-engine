@@ -5,9 +5,7 @@ __author__ = 'maxim'
 
 import numpy as np
 
-from base_io import DefaultIO, Serializable
-from base.logging import *
-from hyperengine.base.util import slice_dict
+from ..base import *
 
 
 class BaseCurvePredictor(Serializable):

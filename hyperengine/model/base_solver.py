@@ -5,8 +5,7 @@ __author__ = 'maxim'
 
 import inspect
 
-from base.logging import *
-from hyperengine.base.util import *
+from ..base import *
 
 metrics = {
   'max': lambda curve: max(curve) if curve else 0,

@@ -7,7 +7,7 @@ import unittest
 
 import numpy as np
 
-from hyperengine.model import DataSet, merge_data_sets
+from hyperengine import DataSet, merge_data_sets
 
 
 class DataSetTest(unittest.TestCase):

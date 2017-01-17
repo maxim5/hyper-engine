@@ -5,7 +5,7 @@ __author__ = 'maxim'
 
 import numpy as np
 
-from hyperengine.base.logging import debug
+from ..base import *
 
 
 class BaseUtilityMaximizer(object):

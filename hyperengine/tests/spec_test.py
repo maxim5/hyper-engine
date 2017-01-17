@@ -6,7 +6,6 @@ __author__ = 'maxim'
 import unittest
 
 from hyperengine.spec import *
-from hyperengine.spec import ParsedSpec
 
 
 class SpecTest(unittest.TestCase):

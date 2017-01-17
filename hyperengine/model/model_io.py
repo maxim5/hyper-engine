@@ -5,9 +5,7 @@ __author__ = 'maxim'
 
 import os
 
-from base_io import BaseIO
-from base.logging import *
-from hyperengine.base.util import *
+from ..base import *
 
 
 class ModelIO(BaseIO):

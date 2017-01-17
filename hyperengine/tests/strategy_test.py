@@ -5,9 +5,8 @@ __author__ = 'maxim'
 
 import unittest
 
-from base.logging import log
-from bayesian.sampler import DefaultSampler
-from hyperengine.bayesian.strategy import BayesianStrategy
+from hyperengine.base import *
+from hyperengine import DefaultSampler, BayesianStrategy
 
 
 class BayesianStrategyTest(unittest.TestCase):
