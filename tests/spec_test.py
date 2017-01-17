@@ -5,7 +5,7 @@ __author__ = 'maxim'
 
 import unittest
 
-from . import *
+from spec import *
 from spec.parsed_spec import ParsedSpec
 
 

@@ -6,8 +6,8 @@ __author__ = 'maxim'
 import numpy as np
 import unittest
 
-from base_io import DefaultIO
-from curve_predictor import LinearCurvePredictor
+from model.base_io import DefaultIO
+from model.curve_predictor import LinearCurvePredictor
 
 
 SYNTHETIC_TRAIN = [

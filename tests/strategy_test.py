@@ -6,8 +6,8 @@ __author__ = 'maxim'
 import unittest
 
 from base.logging import log
-from sampler import DefaultSampler
-from strategy import BayesianStrategy
+from bayesian.sampler import DefaultSampler
+from bayesian.strategy import BayesianStrategy
 
 
 class BayesianStrategyTest(unittest.TestCase):

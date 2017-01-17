@@ -4,7 +4,7 @@
 __author__ = 'maxim'
 
 import numpy as np
-from data_set import DataSet, merge_data_sets
+from model.data_set import DataSet, merge_data_sets
 
 import unittest
 
