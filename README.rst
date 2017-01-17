@@ -24,6 +24,10 @@ It aims to provide most state-of-the-art techniques via intuitive interface and 
 Installation
 ============
 
+.. code-block:: shell
+
+    pip install git+https://github.com/maxim5/hyper-engine.git@master 
+
 Dependencies:
 
 -  NumPy
