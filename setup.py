@@ -10,7 +10,7 @@ def read(file_):
 
 setup(
   name = 'hyper-engine',
-  version = '0.1.1',
+  version = '0.1.2',
   author = 'Maxim Podkolzine',
   author_email = 'maxim.podkolzine@gmail.com',
   description = 'Python library for hyper-parameters optimization',
