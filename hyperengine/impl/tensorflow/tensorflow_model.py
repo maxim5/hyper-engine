@@ -3,15 +3,15 @@
 __author__ = 'maxim'
 
 
-class BaseModel(object):
+class TensorflowModel(object):
   def build_graph(self):
-    pass
+    raise NotImplementedError()
 
   def params_num(self):
-    pass
+    raise NotImplementedError()
 
   def hyper_params(self):
-    pass
+    raise NotImplementedError()
 
   def feed_dict(self):
-    pass
+    raise NotImplementedError()
