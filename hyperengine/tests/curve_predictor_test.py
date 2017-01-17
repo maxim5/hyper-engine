@@ -3,12 +3,12 @@
 
 __author__ = 'maxim'
 
-import numpy as np
 import unittest
 
-from model.base_io import DefaultIO
-from model.curve_predictor import LinearCurvePredictor
+import numpy as np
 
+from hyperengine.model.base_io import DefaultIO
+from model.curve_predictor import LinearCurvePredictor
 
 SYNTHETIC_TRAIN = [
   ([40, 50, 55, 60, 63, 65, 68, 67, 69, 70, 72], 72),

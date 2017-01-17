@@ -4,9 +4,9 @@
 __author__ = 'maxim'
 
 
-from model.base_runner import BaseRunner
-from base.logging import *
-from base.util import *
+from hyperengine.model.base_runner import BaseRunner
+from hyperengine.base.logging import *
+from hyperengine.base.util import *
 
 
 class TensorflowRunner(BaseRunner):

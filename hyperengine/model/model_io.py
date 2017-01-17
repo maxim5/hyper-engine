@@ -3,11 +3,11 @@
 
 __author__ = 'maxim'
 
-
 import os
+
 from base_io import BaseIO
 from base.logging import *
-from base.util import *
+from hyperengine.base.util import *
 
 
 class ModelIO(BaseIO):

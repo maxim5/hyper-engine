@@ -33,7 +33,7 @@ Dependencies:
 -  NumPy
 -  SciPy
 -  TensorFlow (optional)
--  PyPlot (optional)
+-  PyPlot (optional, only if you're using development version)
 
 Compatibility:
 

@@ -3,16 +3,14 @@
 
 __author__ = 'maxim'
 
-
 import numpy as np
 
 from kernel import RadialBasisFunction
 from maximizer import MonteCarloUtilityMaximizer
 from utility import ProbabilityOfImprovement, ExpectedImprovement, UpperConfidenceBound, RandomPoint
-
 from base.logging import *
-from base.util import as_function, as_numeric_function, slice_dict
-from model.base_io import DefaultIO, Serializable
+from hyperengine.base.util import as_function, as_numeric_function, slice_dict
+from hyperengine.model.base_io import DefaultIO, Serializable
 
 
 mu_priors = {

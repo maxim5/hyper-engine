@@ -3,13 +3,11 @@
 
 __author__ = 'maxim'
 
-
 import time
 
 from base.logging import *
-from base.util import *
-from spec.parsed_spec import ParsedSpec
-
+from hyperengine.base.util import *
+from hyperengine.spec import ParsedSpec
 from bayesian.sampler import DefaultSampler
 from bayesian.strategy import BayesianStrategy, BayesianPortfolioStrategy
 

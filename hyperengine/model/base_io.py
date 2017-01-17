@@ -4,10 +4,11 @@
 __author__ = 'maxim'
 
 import os
+
 import numpy as np
 
 from base.logging import *
-from base.util import str_to_dict, dict_to_str
+from hyperengine.base.util import str_to_dict, dict_to_str
 
 
 class BaseIO(object):

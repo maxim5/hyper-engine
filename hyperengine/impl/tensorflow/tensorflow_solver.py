@@ -6,7 +6,7 @@ __author__ = 'maxim'
 import tensorflow as tf
 from tensorflow.python.client import device_lib
 
-from model.base_solver import BaseSolver
+from hyperengine.model import BaseSolver
 from tensorflow_model_io import TensorflowModelIO
 
 

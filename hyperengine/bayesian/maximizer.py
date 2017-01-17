@@ -3,9 +3,9 @@
 
 __author__ = 'maxim'
 
-
 import numpy as np
-from base.logging import debug
+
+from hyperengine.base.logging import debug
 
 
 class BaseUtilityMaximizer(object):

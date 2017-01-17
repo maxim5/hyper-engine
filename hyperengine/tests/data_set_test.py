@@ -3,10 +3,11 @@
 
 __author__ = 'maxim'
 
-import numpy as np
-from model.data_set import DataSet, merge_data_sets
-
 import unittest
+
+import numpy as np
+
+from hyperengine.model import DataSet, merge_data_sets
 
 
 class DataSetTest(unittest.TestCase):

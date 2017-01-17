@@ -7,7 +7,7 @@ import unittest
 
 from base.logging import log
 from bayesian.sampler import DefaultSampler
-from bayesian.strategy import BayesianStrategy
+from hyperengine.bayesian.strategy import BayesianStrategy
 
 
 class BayesianStrategyTest(unittest.TestCase):

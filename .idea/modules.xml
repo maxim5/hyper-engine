@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/hyper-params.iml" filepath="$PROJECT_DIR$/.idea/hyper-params.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/hyper-engine.iml" filepath="$PROJECT_DIR$/.idea/hyper-engine.iml" />
     </modules>
   </component>
 </project>
