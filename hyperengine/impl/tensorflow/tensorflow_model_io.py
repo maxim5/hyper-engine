@@ -7,8 +7,8 @@ import os
 
 import tensorflow as tf
 
+from ...base import *
 from hyperengine.model import ModelIO
-from hyperengine.base.logging import *
 
 
 class TensorflowModelIO(ModelIO):
