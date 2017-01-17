@@ -100,7 +100,7 @@ Note that to achieve the maximum both variables must be picked accurately.
    :alt: 2D Bayesian Optimization
    :align: center
 
-The code for these and others examples is `here <https://github.com/maxim5/hyper-engine/blob/master/tests/strategy_test.py>`__.
+The code for these and others examples is `here <https://github.com/maxim5/hyper-engine/blob/master/hyperengine/tests/strategy_test.py>`__.
 
 Learning Curve Estimation
 =========================
