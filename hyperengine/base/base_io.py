@@ -11,6 +11,10 @@ from .logging import *
 from .util import str_to_dict, dict_to_str
 
 class BaseIO(object):
+  """
+  The base class responsible for I/O operations
+  """
+
   def __init__(self, **params):
     self.load_dir = params.get('load_dir')
     self.save_dir = params.get('save_dir')
@@ -36,6 +40,10 @@ class BaseIO(object):
 
 
 class Serializable(object):
+  """
+  Represents a serializable object
+  """
+
   def import_from(self, data):
     raise NotImplementedError()
 
@@ -52,6 +60,10 @@ class Serializable(object):
 
 
 class DefaultIO(BaseIO):
+  """
+  A simple I/O classes and can save and load a serializable instance.
+  """
+
   def __init__(self, serializable, filename, **params):
     super(DefaultIO, self).__init__(**params)
     self.serializable = serializable
