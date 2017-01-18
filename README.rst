@@ -18,7 +18,7 @@ Overview
 About
 =====
 
-*Hyper-Engine* is a toolbox for `Model selection <https://en.wikipedia.org/wiki/Hyperparameter_optimization>`__.
+*Hyper-Engine* is a toolbox for `model selection and hyper-parameters tuning <https://en.wikipedia.org/wiki/Hyperparameter_optimization>`__.
 It aims to provide most state-of-the-art techniques via intuitive interface and with minimum dependencies.
 
 Installation
