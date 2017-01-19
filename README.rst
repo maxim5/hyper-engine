@@ -140,7 +140,9 @@ Implements the following `methods <https://en.wikipedia.org/wiki/Bayesian_optimi
 -  Expected Improvement (See J. Mockus, V. Tiesis, and A. Zilinskas. Toward Global Optimization, volume 2, chapter The Application of Bayesian Methods for Seeking the Extremum, pages 117–128. Elsevier, 1978)
 -  `Upper Confidence Bound <http://www.jmlr.org/papers/volume3/auer02a/auer02a.pdf>`__
 -  `Mixed / Portfolio strategy <http://mlg.eng.cam.ac.uk/hoffmanm/papers/hoffman:2011.pdf>`__
+-  Naive random search.
 
-Uses `RBF kernel <https://en.wikipedia.org/wiki/Radial_basis_function_kernel>`__ by default, but can be extended.
+PI method prefers exploitation to exploration, UCB is the opposite. One of the best strategies we've seen is a mixed one:
+start with high probability of UCB and gradually decrease it, increasing PI probability.
 
-Finally, can use naive random search.
+Default kernel function used is `RBF kernel <https://en.wikipedia.org/wiki/Radial_basis_function_kernel>`__, but it is extensible.
