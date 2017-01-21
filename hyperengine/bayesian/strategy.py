@@ -37,6 +37,14 @@ maximizers = {
 
 
 class BaseStrategy(Serializable):
+  """
+  A strategy represents an iterative algorithm of selecting points from a high-dimensional space.
+  The caller should evaluate the target function for each point and report the value back to the strategy.
+  The strategy is responsible to solve exploration / exploitation problem in order to iterate to the local maximum
+  as fast as possible.
+  The strategy can also save and restore the session to/from the file between different executions.
+  """
+
   def __init__(self, sampler, **params):
     self._sampler = sampler
     self._params = params
@@ -49,20 +57,35 @@ class BaseStrategy(Serializable):
 
   @property
   def iteration(self):
+    """
+    Returns current iteration.
+    """
     return self._points.shape[0]
 
   @property
   def points(self):
+    """
+    Returns all previously selected points
+    """
     return self._points
 
   @property
   def values(self):
+    """
+    Returns all collected values.
+    """
     return self._values
 
   def next_proposal(self):
+    """
+    Returns the next proposed point.
+    """
     raise NotImplementedError()
 
   def add_point(self, point, value):
+    """
+    Adds the point along with its value to the strategy store.
+    """
     self._points = np.append(self._points, point).reshape([-1] + list(point.shape))
     self._values = np.append(self._values, value)
     self._strategy_io.save()
@@ -75,6 +98,10 @@ class BaseStrategy(Serializable):
 
 
 class BaseBayesianStrategy(BaseStrategy):
+  """
+  Represents an abstract Bayesian optimization strategy.
+  """
+
   def __init__(self, sampler, **params):
     super(BaseBayesianStrategy, self).__init__(sampler, **params)
     self._kernel = None
@@ -99,6 +126,11 @@ class BaseBayesianStrategy(BaseStrategy):
 
 
 class BayesianStrategy(BaseBayesianStrategy):
+  """
+  Represents a straight Bayesian strategy, based on a single utility method (not mixed).
+  Utility method must implement `BaseUtility` interface.
+  """
+
   def __init__(self, sampler, **params):
     super(BayesianStrategy, self).__init__(sampler, **params)
     self._method = None
@@ -113,6 +145,12 @@ class BayesianStrategy(BaseBayesianStrategy):
 
 
 class BayesianPortfolioStrategy(BaseBayesianStrategy):
+  """
+  Represents a Bayesian portfolio strategy, that combines several utility methods and
+  picks a random method on each iteration.
+  Utility methods must implement `BaseUtility` interface.
+  """
+
   def __init__(self, sampler, methods, **params):
     self._methods = [as_function(gen, presets=utilities) for gen in methods]
     self._probabilities = params.get('probabilities')
