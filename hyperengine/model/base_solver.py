@@ -13,6 +13,10 @@ metrics = {
 }
 
 class BaseSolver(object):
+  """
+  Implements a training algorithm.
+  """
+
   def __init__(self, data, runner, augmentation=None, result_metric='max', **params):
     data.reset_counters()
     self._train_set = data.train

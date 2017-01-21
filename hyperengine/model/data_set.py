@@ -6,6 +6,10 @@ __author__ = 'maxim'
 import numpy as np
 
 class DataSet(object):
+  """
+  A labeled data set. Both examples and labels are stored as numpy arrays.
+  """
+
   def __init__(self, x, y):
     x = np.array(x)
     y = np.array(y)
@@ -29,7 +33,9 @@ class DataSet(object):
     self.index_in_epoch = 0
 
   def next_batch(self, batch_size):
-    """Return the next `batch_size` examples from this data set."""
+    """
+    Return the next `batch_size` examples from this data set.
+    """
     if self.just_completed:
       permutation = np.arange(self.size)
       np.random.shuffle(permutation)
@@ -54,6 +60,10 @@ def merge_data_sets(ds1, ds2):
 
 
 class Data(object):
+  """
+  Holds a standard data division: training set, validation set and test set.
+  """
+
   def __init__(self, train, validation, test):
     self.train = train
     self.validation = validation

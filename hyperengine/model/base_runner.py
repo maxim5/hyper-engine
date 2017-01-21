@@ -5,14 +5,31 @@ __author__ = 'maxim'
 
 
 class BaseRunner(object):
+  """
+  The runner represents a connecting layer between the solver and the machine learning model.
+  Responsible for communicating with the model with a data batch: prepare, train, evaluate.
+  """
+
   def build_model(self, **kwargs):
-    pass
+    """
+    Builds and prepares a model.
+    """
+    raise NotImplementedError()
 
   def run_batch(self, batch_x, batch_y):
-    pass
+    """
+    Runs the training for a batch of data.
+    """
+    raise NotImplementedError()
 
   def evaluate(self, batch_x, batch_y):
-    return {}
+    """
+    Evaluates the test result for a batch of data.
+    """
+    raise NotImplementedError()
 
   def describe(self):
-    return {}
+    """
+    Describes the model.
+    """
+    raise NotImplementedError()
