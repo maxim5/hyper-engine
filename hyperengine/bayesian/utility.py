@@ -9,6 +9,12 @@ from scipy import stats
 
 
 class BaseUtility(object):
+  """
+  Utility is a function that evaluates a potential of the points in high-dimensional spaces.
+  Utility can use prior information about the true values over certain points to model the target function,
+  thus predict the points that are likely to be the maximum.
+  """
+
   def __init__(self, points, values, **params):
     super(BaseUtility, self).__init__()
     self.points = np.array(points)
@@ -24,10 +30,17 @@ class BaseUtility(object):
     self.iteration = params.get('iteration', self.points.shape[0])
 
   def compute_values(self, batch):
+    """
+    Evaluates the utility function for a batch of points. Returns the numpy array.
+    """
     raise NotImplementedError()
 
 
 class BaseGaussianUtility(BaseUtility):
+  """
+  Represents the utility function based on Gaussian Process models.
+  """
+
   def __init__(self, points, values, kernel, mu_prior=0, noise_sigma=0.0, **params):
     super(BaseGaussianUtility, self).__init__(points, values, **params)
     self.kernel = kernel
@@ -60,6 +73,13 @@ class BaseGaussianUtility(BaseUtility):
 
 
 class ProbabilityOfImprovement(BaseGaussianUtility):
+  """
+  Implements the PI method.
+  See the following sources for more details:
+  H. J. Kushner. A new method of locating the maximum of an arbitrary multipeak curve in the presence of noise.
+  J. Basic Engineering, 86:97–106, 1964.
+  """
+
   def __init__(self, points, values, kernel, mu_prior=0, noise_sigma=0.0, **params):
     super(ProbabilityOfImprovement, self).__init__(points, values, kernel, mu_prior, noise_sigma, **params)
     self.epsilon = params.get('epsilon', 1e-8)
@@ -74,6 +94,13 @@ class ProbabilityOfImprovement(BaseGaussianUtility):
 
 
 class ExpectedImprovement(BaseGaussianUtility):
+  """
+  Implements the EI method.
+  See the following sources for more details:
+  J. Mockus, V. Tiesis, and A. Zilinskas. Toward Global Optimization, volume 2,
+  chapter The Application of Bayesian Methods for Seeking the Extremum, pages 117–128. Elsevier, 1978.
+  """
+
   def __init__(self, points, values, kernel, mu_prior=0, noise_sigma=0.0, **params):
     super(ExpectedImprovement, self).__init__(points, values, kernel, mu_prior, noise_sigma, **params)
     self.epsilon = params.get('epsilon', 1e-8)
@@ -88,6 +115,13 @@ class ExpectedImprovement(BaseGaussianUtility):
 
 
 class UpperConfidenceBound(BaseGaussianUtility):
+  """
+  Implements the UCB method.
+  See the following sources for more details:
+  Peter Auer, Using Confidence Bounds for Exploitation-Exploration Trade-offs,
+  Journal of Machine Learning Research 3 (2002) 397-422, 2011.
+  """
+
   def __init__(self, points, values, kernel, mu_prior=0, noise_sigma=0.0, **params):
     super(UpperConfidenceBound, self).__init__(points, values, kernel, mu_prior, noise_sigma, **params)
     delta = params.get('delta', 0.5)
@@ -99,6 +133,10 @@ class UpperConfidenceBound(BaseGaussianUtility):
 
 
 class RandomPoint(BaseUtility):
+  """
+  A naive random point method. All points are picked equally likely, thus utility method is constant everywhere.
+  """
+
   def __init__(self, points, values, **params):
     super(RandomPoint, self).__init__(points, values, **params)
 
