@@ -10,7 +10,7 @@ from scipy import stats
 
 class BaseUtility(object):
   """
-  Utility is a function that evaluates a potential of the points in high-dimensional spaces.
+  Utility (aka acquisition) is a function that evaluates a potential of the points in high-dimensional spaces.
   Utility can use prior information about the true values over certain points to model the target function,
   thus predict the points that are likely to be the maximum.
   """
@@ -39,6 +39,7 @@ class BaseUtility(object):
 class BaseGaussianUtility(BaseUtility):
   """
   Represents the utility function based on Gaussian Process models.
+  See https://en.wikipedia.org/wiki/Gaussian_process
   """
 
   def __init__(self, points, values, kernel, mu_prior=0, noise_sigma=0.0, **params):

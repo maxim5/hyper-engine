@@ -38,10 +38,13 @@ maximizers = {
 
 class BaseStrategy(Serializable):
   """
-  A strategy represents an iterative algorithm of selecting points from a high-dimensional space.
+  A strategy represents an iterative algorithm of selecting points from a high-dimensional space:
+  a sequential design strategy for global optimization of black-box functions that doesn't require derivatives.
+
   The caller should evaluate the target function for each point and report the value back to the strategy.
   The strategy is responsible to solve exploration / exploitation problem in order to iterate to the local maximum
   as fast as possible.
+
   The strategy can also save and restore the session to/from the file between different executions.
   """
 
@@ -100,6 +103,7 @@ class BaseStrategy(Serializable):
 class BaseBayesianStrategy(BaseStrategy):
   """
   Represents an abstract Bayesian optimization strategy.
+  See https://en.wikipedia.org/wiki/Bayesian_optimization
   """
 
   def __init__(self, sampler, **params):
