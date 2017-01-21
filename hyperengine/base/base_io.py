@@ -41,10 +41,13 @@ class BaseIO(object):
 
 class Serializable(object):
   """
-  Represents a serializable object
+  Represents a serializable object: can export own state to the dictionary and import back.
   """
 
   def import_from(self, data):
+    """
+    Imports the object state from the object `data`, usually a dictionary.
+    """
     raise NotImplementedError()
 
   def _import_from_keys(self, data, keys, default_value):
@@ -53,6 +56,9 @@ class Serializable(object):
       setattr(self, '_%s' % key, value)
 
   def export_to(self):
+    """
+    Exports the object to the dictionary.
+    """
     raise NotImplementedError()
 
   def _export_keys_to(self, keys):
