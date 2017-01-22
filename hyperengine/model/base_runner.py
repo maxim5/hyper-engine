@@ -12,24 +12,31 @@ class BaseRunner(object):
 
   def build_model(self, **kwargs):
     """
-    Builds and prepares a model.
+    Builds and prepares a model. Method is not expected to return anything.
     """
     raise NotImplementedError()
 
   def run_batch(self, batch_x, batch_y):
     """
-    Runs the training for a batch of data.
+    Runs the training iteration for a batch of data. Method is not expected to return anything.
     """
     raise NotImplementedError()
 
   def evaluate(self, batch_x, batch_y):
     """
-    Evaluates the test result for a batch of data.
+    Evaluates the test result for a batch of data. Method should return the dictionary that contains
+    one (or all) of the following:
+    - batch accuracy (key 'accuracy')
+    - associated cost (key 'cost')
+    - any other computed data (key 'data')
     """
     raise NotImplementedError()
 
   def describe(self):
     """
-    Describes the model.
+    Describes the model. Method should return the dictionary that contains one (or all) of the following:
+    - model size (number of learnable parameters) (key 'model_size')
+    - model memory requirements (key 'model_memory')
+    - hyper parameters used (key 'hyper_parameters')
     """
     raise NotImplementedError()
