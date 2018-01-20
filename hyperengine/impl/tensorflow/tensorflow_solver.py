@@ -26,7 +26,7 @@ class TensorflowSolver(BaseSolver):
     super(TensorflowSolver, self).__init__(runner, data, hyper_params, augmentation, result_metric, **params)
 
   def create_session(self):
-    self._session = tf.Session()
+    self._session = tf.Session(graph=self._runner.graph())
     return self._session
 
   def init_session(self):
@@ -35,11 +35,9 @@ class TensorflowSolver(BaseSolver):
     return results.get('validation_accuracy', 0)
 
   def terminate(self):
-    super(TensorflowSolver, self).terminate()
-    tf.reset_default_graph()
+    self._runner.terminate()
 
   def on_best_accuracy(self, accuracy, eval_result):
-    super(TensorflowSolver, self).on_best_accuracy(accuracy, eval_result)
     if accuracy >= self._save_accuracy_limit:
       self._model_io.save_results({'validation_accuracy': accuracy, 'model_size': self._runner.model_size()})
       self._model_io.save_hyper_params(self._hyper_params)

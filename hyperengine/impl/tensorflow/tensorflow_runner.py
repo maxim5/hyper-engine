@@ -45,6 +45,12 @@ class TensorflowRunner(BaseRunner):
     loss, accuracy = self._session.run([self._loss, self._accuracy], feed_dict=feed_dict)
     return {'loss': loss, 'accuracy': accuracy}
 
+  def terminate(self):
+    tf.reset_default_graph()
+
+  def graph(self):
+    return self._graph
+
   def model_size(self):
     return self._model_size
 
