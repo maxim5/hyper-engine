@@ -40,12 +40,16 @@ class MonteCarloUtilityMaximizer(BaseUtilityMaximizer):
     batch = self._sampler.sample(size=self._batch_size)
     values = self._utility.compute_values(batch)
     i = np.argmax(values)
-    debug('Max prediction_value: %.6f' % values[i])
-    return self._tweak_randomly(batch[i], batch[0])
+    debug('Max utility point:', batch[i])
+    vlog('Max utility value:', values[i])
+    point = self._tweak_randomly(batch[i], batch[0])
+    return point
 
   def _tweak_randomly(self, optimal, point):
     if np.random.uniform() < self._tweak_probability:
+      debug('Tweaking optimal point with probability:', self._flip_probability)
       p = self._flip_probability or min(2.0 / optimal.shape[0], 0.5)
       mask = np.random.choice([False, True], size=optimal.shape, p=[1-p, p])
       optimal[mask] = point[mask]
+      debug('Selected point after random tweaking:', optimal)
     return optimal

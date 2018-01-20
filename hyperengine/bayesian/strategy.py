@@ -89,6 +89,8 @@ class BaseStrategy(Serializable):
     """
     Adds the point along with its value to the strategy store.
     """
+    debug('Adding a point:', point)
+    debug('Adding a value:', value)
     self._points = np.append(self._points, point).reshape([-1] + list(point.shape))
     self._values = np.append(self._values, value)
     self._strategy_io.save()

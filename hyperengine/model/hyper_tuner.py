@@ -22,7 +22,7 @@ class HyperTuner(object):
     self.solver_generator = solver_generator
 
     self.parsed = ParsedSpec(hyper_params_spec)
-    info('Spec size=%d' % self.parsed.size())
+    info('Spec size:', self.parsed.size())
 
     sampler = DefaultSampler()
     sampler.add_uniform(self.parsed.size())
@@ -33,7 +33,7 @@ class HyperTuner(object):
     self.timeout = strategy_params.get('timeout', 10)
 
   def tune(self):
-    info('Start hyper-tuner')
+    info('Start hyper tuner')
 
     while True:
       point = self.strategy.next_proposal()

@@ -81,7 +81,8 @@ class DefaultIO(BaseIO):
       destination = os.path.join(directory, self.filename)
       if os.path.exists(destination):
         data = DefaultIO._load_dict(destination)
-        debug('Loaded data: %s from %s' % (smart_str(data), destination))
+        if is_debug_logged():
+          debug('Loaded data: %s from %s' % (smart_str(data), destination))
         self.serializable.import_from(data)
         return
     self.serializable.import_from({})
@@ -92,5 +93,7 @@ class DefaultIO(BaseIO):
       return
     destination = os.path.join(directory, self.filename)
     with open(destination, 'w') as file_:
-      file_.write(smart_str(self.serializable.export_to()))
-      debug('Data saved to %s' % destination)
+      data = smart_str(self.serializable.export_to())
+      vlog('Exported data:', data)
+      file_.write(data)
+      debug('Data saved to:', destination)
