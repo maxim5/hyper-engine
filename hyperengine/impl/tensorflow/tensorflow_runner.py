@@ -56,7 +56,7 @@ class TensorflowRunner(BaseRunner):
 
   def _get_feed_dict(self, batch_x, batch_y, mode):
     feed_dict = {self._x: batch_x, self._y: batch_y}
-    if self._mode:
+    if self._mode is not None:
       feed_dict[self._mode] = mode
     for k, v in self._extra_feed.items():
       if isinstance(v, dict) and mode in v.keys():
