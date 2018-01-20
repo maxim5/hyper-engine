@@ -23,7 +23,7 @@ class TensorflowRunner(BaseRunner):
     self._session.run(self._init, feed_dict=self._model.feed_dict(mode='train'))
 
     info('Start training. Model size: %dk' % (self._model.params_num() / 1000))
-    info('Hyper params: %s' % dict_to_str(self._model.hyper_params()))
+    info('Hyper params: %s' % smart_str(self._model.hyper_params()))
 
   def run_batch(self, batch_x, batch_y):
     self._session.run(self._optimizer, feed_dict=self._model.feed_dict(x=batch_x, y=batch_y, mode='train'))

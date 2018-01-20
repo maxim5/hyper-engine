@@ -20,7 +20,7 @@ class ModelIO(BaseIO):
 
     destination = os.path.join(directory, 'results.xjson')
     with open(destination, 'w') as file_:
-      file_.write(dict_to_str(results))
+      file_.write(smart_str(results))
       debug('Results saved to %s' % destination)
 
   def load_results(self, directory, log_level):
@@ -30,7 +30,7 @@ class ModelIO(BaseIO):
     destination = os.path.join(directory, 'results.xjson')
     if os.path.exists(destination):
       results = ModelIO._load_dict(destination)
-      log_at_level(log_level, 'Loaded results: %s from %s' % (dict_to_str(results), destination))
+      log_at_level(log_level, 'Loaded results: %s from %s' % (smart_str(results), destination))
       return results
 
   def save_hyper_params(self, hyper_params, directory=None):
@@ -40,7 +40,7 @@ class ModelIO(BaseIO):
 
     destination = os.path.join(directory, 'hyper_params.xjson')
     with open(destination, 'w') as file_:
-      file_.write(dict_to_str(hyper_params))
+      file_.write(smart_str(hyper_params))
       debug('Hyper parameters saved to %s' % destination)
 
   def load_hyper_params(self, directory=None):
@@ -50,7 +50,7 @@ class ModelIO(BaseIO):
 
     hyper_params = ModelIO._load_dict(os.path.join(directory, 'hyper_params.xjson'))
     if hyper_params:
-      info('Loaded hyper-params: %s' % dict_to_str(hyper_params))
+      info('Loaded hyper-params: %s' % smart_str(hyper_params))
       return hyper_params
 
   def save_data(self, data, directory=None):

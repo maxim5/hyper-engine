@@ -47,7 +47,7 @@ class HyperTuner(object):
       index = len(self.strategy.values)
 
       marker = '!' if accuracy > previous_max else ' '
-      info('%s [%d] accuracy=%.4f, params: %s' % (marker, index, accuracy, dict_to_str(hyper_params)))
+      info('%s [%d] accuracy=%.4f, params: %s' % (marker, index, accuracy, smart_str(hyper_params)))
       info('Current top-%d:' % min(len(self.strategy.values), 5))
       for value in sorted(self.strategy.values, reverse=True)[:5]:
         info('  accuracy=%.4f' % value)

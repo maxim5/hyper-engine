@@ -8,7 +8,7 @@ import os
 import numpy as np
 
 from .logging import *
-from .util import str_to_dict, dict_to_str
+from .util import str_to_dict, smart_str
 
 class BaseIO(object):
   """
@@ -81,7 +81,7 @@ class DefaultIO(BaseIO):
       destination = os.path.join(directory, self.filename)
       if os.path.exists(destination):
         data = DefaultIO._load_dict(destination)
-        debug('Loaded data: %s from %s' % (dict_to_str(data), destination))
+        debug('Loaded data: %s from %s' % (smart_str(data), destination))
         self.serializable.import_from(data)
         return
     self.serializable.import_from({})
@@ -92,5 +92,5 @@ class DefaultIO(BaseIO):
       return
     destination = os.path.join(directory, self.filename)
     with open(destination, 'w') as file_:
-      file_.write(dict_to_str(self.serializable.export_to()))
+      file_.write(smart_str(self.serializable.export_to()))
       debug('Data saved to %s' % destination)
