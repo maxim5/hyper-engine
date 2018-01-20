@@ -3,12 +3,14 @@
 
 __author__ = 'maxim'
 
+import datetime
 import os
 
 import numpy as np
 
 from .logging import *
-from .util import str_to_dict, smart_str
+from .util import str_to_dict, smart_str, random_id
+
 
 class BaseIO(object):
   """
@@ -17,7 +19,7 @@ class BaseIO(object):
 
   def __init__(self, **params):
     self.load_dir = params.get('load_dir')
-    self.save_dir = params.get('save_dir')
+    self.save_dir = _format_path(params.get('save_dir'))
 
   @staticmethod
   def _prepare(directory):
@@ -97,3 +99,12 @@ class DefaultIO(BaseIO):
       vlog('Exported data:', data)
       file_.write(data)
       debug('Data saved to:', destination)
+
+
+def _format_path(directory):
+  if directory and '{' in directory and '}' in directory:
+    now = datetime.datetime.now()
+    return directory.format(date=now.strftime('%Y-%m-%d'),
+                            time=now.strftime('%H-%M-%S'),
+                            random_id=random_id())
+  return directory
