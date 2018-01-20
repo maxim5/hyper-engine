@@ -10,9 +10,15 @@ class BaseRunner(object):
   Responsible for communicating with the model with a data batch: prepare, train, evaluate.
   """
 
-  def build_model(self, **kwargs):
+  def build_model(self):
     """
     Builds and prepares a model. Method is not expected to return anything.
+    """
+    raise NotImplementedError()
+
+  def init(self, **kwargs):
+    """
+     Runs the model initializer.
     """
     raise NotImplementedError()
 
@@ -27,16 +33,13 @@ class BaseRunner(object):
     Evaluates the test result for a batch of data. Method should return the dictionary that contains
     one (or all) of the following:
     - batch accuracy (key 'accuracy')
-    - associated cost (key 'cost')
+    - associated loss (key 'loss')
     - any other computed data (key 'data')
     """
     raise NotImplementedError()
 
-  def describe(self):
+  def model_size(self):
     """
-    Describes the model. Method should return the dictionary that contains one (or all) of the following:
-    - model size (number of learnable parameters) (key 'model_size')
-    - model memory requirements (key 'model_memory')
-    - hyper parameters used (key 'hyper_parameters')
+    Returns the model size.
     """
     raise NotImplementedError()

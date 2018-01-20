@@ -8,22 +8,29 @@ from tensorflow.python.client import device_lib
 
 from hyperengine.model import BaseSolver
 from tensorflow_model_io import TensorflowModelIO
+from tensorflow_runner import TensorflowRunner
 
 
 class TensorflowSolver(BaseSolver):
-  def __init__(self, data, runner, augmentation=None, model_io=None, result_metric='max', **params):
+  def __init__(self, data, model=None, hyper_params=None, augmentation=None, model_io=None, result_metric='max', **params):
+    if isinstance(model, TensorflowRunner):
+      runner = model
+    else:
+      runner = TensorflowRunner(model)
+
     self._session = None
     self._model_io = model_io if model_io is not None else TensorflowModelIO(**params)
     self._save_accuracy_limit = params.get('save_accuracy_limit', 0)
 
     params['eval_flexible'] = params.get('eval_flexible', True) and _is_gpu_available
-    super(TensorflowSolver, self).__init__(data, runner, augmentation, result_metric, **params)
+    super(TensorflowSolver, self).__init__(runner, data, hyper_params, augmentation, result_metric, **params)
 
   def create_session(self):
     self._session = tf.Session()
     return self._session
 
   def init_session(self):
+    self._runner.init(session=self._session)
     results = self._load(directory=self._model_io.load_dir, log_level=1)
     return results.get('validation_accuracy', 0)
 
@@ -34,9 +41,8 @@ class TensorflowSolver(BaseSolver):
   def on_best_accuracy(self, accuracy, eval_result):
     super(TensorflowSolver, self).on_best_accuracy(accuracy, eval_result)
     if accuracy >= self._save_accuracy_limit:
-      runner_describe = self._runner.describe()
-      self._model_io.save_results({'validation_accuracy': accuracy, 'model_size': runner_describe.get('model_size', 0)})
-      self._model_io.save_hyper_params(runner_describe.get('hyper_params', {}))
+      self._model_io.save_results({'validation_accuracy': accuracy, 'model_size': self._runner.model_size()})
+      self._model_io.save_hyper_params(self._hyper_params)
       self._model_io.save_session(self._session)
       self._model_io.save_data(eval_result.get('data'))
 

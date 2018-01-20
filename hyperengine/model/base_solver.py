@@ -17,13 +17,14 @@ class BaseSolver(object):
   Implements a training algorithm.
   """
 
-  def __init__(self, data, runner, augmentation=None, result_metric='max', **params):
+  def __init__(self, runner, data, hyper_params, augmentation=None, result_metric='max', **params):
     data.reset_counters()
     self._train_set = data.train
     self._val_set = data.validation
     self._test_set = data.test
     self._augmentation = augmentation
     self._runner = runner
+    self._hyper_params = hyper_params
     self._result_metric = as_numeric_function(result_metric, presets=metrics)
     self._max_val_accuracy = 0
     self._val_accuracy_curve = []
@@ -39,9 +40,11 @@ class BaseSolver(object):
     self._eval_test = params.get('evaluate_test', False)
 
   def train(self):
-    with self.create_session() as session:
-      self._runner.build_model(session=session)
+    self._runner.build_model()
+    info('Start training. Model size: %dk' % (self._runner.model_size() / 1000))
+    info('Hyper params: %s' % smart_str(self._hyper_params))
 
+    with self.create_session():
       self._max_val_accuracy = self.init_session()
       while self._train_set.epochs_completed < self._epochs:
         batch_x, batch_y = self._train_set.next_batch(self._batch_size)
@@ -112,12 +115,12 @@ class BaseSolver(object):
   def _evaluate_validation(self, batch_x, batch_y):
     if (self._train_set.step % self._eval_train_every == 0) and is_info_logged():
       eval_ = self._runner.evaluate(batch_x, batch_y)
-      self._log_iteration('train_accuracy', eval_.get('cost', 0), eval_.get('accuracy', 0), False)
+      self._log_iteration('train_accuracy', eval_.get('loss', 0), eval_.get('accuracy', 0), False)
 
     if (self._train_set.step % self._eval_validation_every == 0) or \
         (self._train_set.just_completed and self._eval_flexible):
       eval_ = self._evaluate(batch_x=self._val_set.x, batch_y=self._val_set.y)
-      self._log_iteration('validation_accuracy', eval_.get('cost', 0), eval_.get('accuracy', 0), True)
+      self._log_iteration('validation_accuracy', eval_.get('loss', 0), eval_.get('accuracy', 0), True)
       return eval_
 
   def _evaluate_test(self):
@@ -137,15 +140,15 @@ class BaseSolver(object):
     if size <= self._eval_batch_size:
       return self._runner.evaluate(batch_x, batch_y)
 
-    result = {'accuracy': 0, 'cost': 0, 'misclassified_x': [], 'misclassified_y': []}
+    result = {'accuracy': 0, 'loss': 0, 'misclassified_x': [], 'misclassified_y': []}
     for start, end in mini_batch(size, self._eval_batch_size):
       eval = self._runner.evaluate(batch_x=batch_x[start:end], batch_y=batch_y[start:end])
       result['accuracy'] += eval.get('accuracy', 0) * len(batch_x[start:end])
-      result['cost'] += eval.get('cost', 0) * len(batch_x[start:end])
+      result['loss'] += eval.get('loss', 0) * len(batch_x[start:end])
       result['misclassified_x'].append(eval.get('misclassified_x'))
       result['misclassified_y'].append(eval.get('misclassified_y'))
     result['accuracy'] /= size
-    result['cost'] /= size
+    result['loss'] /= size
     result['misclassified_x'] = safe_concat(result['misclassified_x'])
     result['misclassified_y'] = safe_concat(result['misclassified_y'])
 
