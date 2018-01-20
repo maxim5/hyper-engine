@@ -19,5 +19,5 @@ setup(
   url = 'https://github.com/maxim5/hyper-engine',
   packages=find_packages(exclude=['*tests*']),
   long_description=read('README.rst'),
-  requires=['numpy', 'scipy'],
+  requires=['numpy', 'scipy', 'tensorflow'],
 )
