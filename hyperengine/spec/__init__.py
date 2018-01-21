@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 __author__ = 'maxim'
 
-from sugar import wrap, choice, uniform, normal, merge, random_bit, random_int, \
+from sugar import wrap, choice, uniform, normal, merge, random_bit, random_bool, random_int, \
                   min_ as min, max_ as max, \
                   exp, expm1, frexp, ldexp, \
                   sqrt, pow, \

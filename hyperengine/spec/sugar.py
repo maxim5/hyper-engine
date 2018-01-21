@@ -37,6 +37,9 @@ def merge(nodes, function, name=None):
 def random_bit():
   return choice([0, 1])
 
+def random_bool():
+  return choice([False, True])
+
 def random_int(n):
   return choice(range(n))
 
