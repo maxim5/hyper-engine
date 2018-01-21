@@ -9,29 +9,23 @@ from tensorflow.examples.tutorials.mnist import input_data
 import hyperengine as hype
 
 def cnn_model(params):
-  conv_filters_1 = params['conv_filters_1']
-  conv_filters_2 = params['conv_filters_2']
-  dense_size = params['dense_size']
-  dropout_rate = params['dropout_rate']
-  learning_rate = params['learning_rate']
-
   x = tf.placeholder(tf.float32, [None, 28, 28, 1], name='input')
   y = tf.placeholder(tf.float32, [None, 10], name='label')
   mode = tf.placeholder(tf.string, name='mode')
 
-  conv1 = tf.layers.conv2d(x, filters=conv_filters_1, kernel_size=[3, 3], padding='same', activation=tf.nn.relu)
+  conv1 = tf.layers.conv2d(x, filters=params.conv_filters_1, kernel_size=[3, 3], padding='same', activation=tf.nn.relu)
   pool1 = tf.layers.max_pooling2d(conv1, pool_size=[2, 2], strides=[2, 2])
 
-  conv2 = tf.layers.conv2d(pool1, filters=conv_filters_2, kernel_size=[3, 3], padding='same', activation=tf.nn.relu)
+  conv2 = tf.layers.conv2d(pool1, filters=params.conv_filters_2, kernel_size=[3, 3], padding='same', activation=tf.nn.relu)
   pool2 = tf.layers.max_pooling2d(conv2, pool_size=[2, 2], strides=[2, 2])
 
   flat = tf.reshape(pool2, [-1, pool2.shape[1] * pool2.shape[2] * pool2.shape[3]])
-  dense = tf.layers.dense(inputs=flat, units=dense_size, activation=tf.nn.relu)
-  dense = tf.layers.dropout(dense, rate=dropout_rate, training=tf.equal(mode, 'train'))
+  dense = tf.layers.dense(inputs=flat, units=params.dense_size, activation=tf.nn.relu)
+  dense = tf.layers.dropout(dense, rate=params.dropout_rate, training=tf.equal(mode, 'train'))
   logits = tf.layers.dense(inputs=dense, units=10)
 
   loss_op = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=y), name='loss')
-  optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate)
+  optimizer = tf.train.AdamOptimizer(learning_rate=params.learning_rate)
   train_op = optimizer.minimize(loss_op, name='minimize')
   accuracy = tf.reduce_mean(tf.cast(tf.equal(tf.argmax(logits, 1), tf.argmax(y, 1)), tf.float32), name='accuracy')
 
@@ -58,13 +52,13 @@ def solver_generator(params):
   return solver
 
 
-hyper_params_spec = {
-  'learning_rate': 10**hype.spec.uniform(-2, -3),
-  'conv_filters_1': hype.spec.choice([20, 32, 48]),
-  'conv_filters_2': hype.spec.choice([64, 96, 128]),
-  'dense_size': hype.spec.choice([256, 512, 768, 1024]),
-  'dropout_rate': hype.spec.uniform(0.5, 0.9),
-}
+hyper_params_spec = hype.spec.new(
+  learning_rate = 10**hype.spec.uniform(-2, -3),
+  conv_filters_1 = hype.spec.choice([20, 32, 48]),
+  conv_filters_2 = hype.spec.choice([64, 96, 128]),
+  dense_size = hype.spec.choice([256, 512, 768, 1024]),
+  dropout_rate = hype.spec.uniform(0.5, 0.9),
+)
 strategy_params = {
   'io_load_dir': 'temp-mnist-train/conv-2.0',
   'io_save_dir': 'temp-mnist-train/conv-2.0',
