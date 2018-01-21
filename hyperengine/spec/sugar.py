@@ -90,3 +90,10 @@ def max_(*array):
   if rest:
     node = merge([node], lambda x: max(x, *rest))
   return node
+
+def new(*args, **kwargs):
+  from ..base import NamedDict
+  if len(args) == 1 and len(kwargs) == 0:
+    return NamedDict(args[0])
+  assert len(args) == 0, 'Failed to created a NamedDict with arguments: %s' % str(args)
+  return NamedDict(kwargs)
