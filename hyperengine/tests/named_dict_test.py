@@ -22,10 +22,8 @@ class NamedDictTest(unittest.TestCase):
         'baz': []
       }
     })
-    parsed = hype.spec.ParsedSpec(spec)
-    points = np.zeros([parsed.size()])
-    instance = parsed.instantiate(points)
 
+    instance = self._instantiate(spec)
     self.assertEqual(repr(instance), "{'foo': {'bar': {'baz': 999}, 'baz': []}}")
     self.assertItemsEqual(instance.foo.keys(), ['bar', 'baz'])
 
@@ -40,15 +38,31 @@ class NamedDictTest(unittest.TestCase):
     spec = hype.spec.new(
       value = [[1], [[2]], (3, 4), {'foo': 5}],
     )
-    parsed = hype.spec.ParsedSpec(spec)
-    points = np.zeros([parsed.size()])
-    instance = parsed.instantiate(points)
 
+    instance = self._instantiate(spec)
     self.assertEqual(type(instance), NamedDict)
     self.assertEqual(type(instance.value), list)
     self.assertEqual(type(instance.value[3]), NamedDict)
     self.assertEqual(repr(instance), "{'value': [[1], [[2]], [3, 4], {'foo': 5}]}")
     self.assertEqual(instance.value[3].foo, 5)
+
+
+  def test_dict_inside_list(self):
+    spec = hype.spec.new(
+      foo = [
+        { 'bar': 0 },
+        { 'bar': 1 },
+        { 'bar': 2 },
+      ]
+    )
+
+    instance = self._instantiate(spec)
+    self.assertEqual(type(instance), NamedDict)
+    self.assertEqual(type(instance.foo), list)
+    self.assertEqual(type(instance.foo[0]), NamedDict)
+    self.assertEqual(instance.foo[0].bar, 0)
+    self.assertEqual(instance.foo[1].bar, 1)
+    self.assertEqual(instance.foo[2].bar, 2)
 
 
   def test_real(self):
@@ -61,10 +75,7 @@ class NamedDictTest(unittest.TestCase):
       dropout=hype.spec.uniform(0.5, 0.9),
     )
 
-    parsed = hype.spec.ParsedSpec(hyper_params_spec)
-    points = np.zeros([parsed.size()])
-    instance = parsed.instantiate(points)
-
+    instance = self._instantiate(hyper_params_spec)
     self.assertEqual(repr(instance),
                      "{'conv': {'filters': [20, 64], 'residual': 0}, 'dropout': 0.500000, 'learning_rate': 0.001000}")
     self.assertItemsEqual(instance.keys(), ['learning_rate', 'conv', 'dropout'])
@@ -83,3 +94,10 @@ class NamedDictTest(unittest.TestCase):
     self.assertEqual(instance.conv.filters, [20, 64])
     self.assertEqual(instance.conv.filters[0], 20)
     self.assertEqual(instance.conv.filters[1], 64)
+
+
+  def _instantiate(self, spec):
+    parsed = hype.spec.ParsedSpec(spec)
+    points = np.zeros([parsed.size()])
+    instance = parsed.instantiate(points)
+    return instance
