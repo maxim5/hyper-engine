@@ -5,6 +5,7 @@ Hyper-parameters Tuning for Machine Learning
 - `Overview <#overview>`__
     - `About <#about>`__
     - `Installation <#installation>`__
+    - `Code examples <#examples>`__
 - `Features <#features>`__
     - `Straight-forward specification <#straight-forward-specification>`__
     - `Exploration-exploitation trade-off <#exploration-exploitation-trade-off>`__
@@ -40,6 +41,11 @@ Compatibility:
 -  Python 2.7 (3.5 is coming)
 
 *Hyper-Engine* is designed to be ML-platform agnostic, but currently provides only simple `TensorFlow <https://github.com/tensorflow/tensorflow>`__ binding.
+
+Examples
+========
+
+See the examples of hyper-parameter tuning in `examples <hyperengine/examples>`__ package.
 
 --------
 Features
