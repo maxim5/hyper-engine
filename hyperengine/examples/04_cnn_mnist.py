@@ -9,7 +9,6 @@ from tensorflow.examples.tutorials.mnist import input_data
 import hyperengine as hype
 
 ACTIVATIONS = {name: getattr(tf.nn, name) for name in ['relu', 'relu6', 'elu', 'sigmoid', 'tanh', 'leaky_relu']}
-DOWN_SAMPLES = {name: getattr(tf.nn, name) for name in ['max_pool', 'avg_pool']}
 
 def cnn_model(params):
   x = tf.placeholder(tf.float32, [None, 28, 28, 1], name='input')
@@ -22,10 +21,10 @@ def cnn_model(params):
                             filters=hp.filter_num,
                             kernel_size=hp.filter_size,
                             padding='same', activation=ACTIVATIONS[hp.activation])
-    pool = tf.layers.max_pooling2d(conv, pool_size=[2, 2], strides=[2, 2])
-    bn = tf.layers.batch_normalization(pool, training=training) if hp.batch_norm else pool
+    bn = tf.layers.batch_normalization(conv, training=training) if hp.batch_norm else conv
     dropped = tf.layers.dropout(bn, rate=hp.dropout, training=training)
-    return dropped
+    pool = tf.layers.max_pooling2d(dropped, pool_size=[2, 2], strides=[2, 2])
+    return pool
 
   def dense_layer(input, hp):
     flat = tf.reshape(input, [-1, input.shape[1] * input.shape[2] * input.shape[3]])
@@ -89,7 +88,7 @@ hyper_params_spec = hype.spec.new(
   # Dense layer
   dense = hype.spec.new(
     size = hype.spec.choice([256, 512, 768, 1024]),
-    dropout = hype.spec.uniform(0.5, 0.9),
+    dropout = hype.spec.uniform(0.0, 0.5),
   ),
 )
 strategy_params = {
