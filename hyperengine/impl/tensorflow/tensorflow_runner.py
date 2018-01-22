@@ -12,15 +12,13 @@ from tf_util import graph_vars, get_total_dim
 
 
 class TensorflowRunner(BaseRunner):
-  def __init__(self, model=None, extra_feed=None):
+  def __init__(self, model=None, extra_feed={}):
     super(TensorflowRunner, self).__init__()
 
-    if model is None:
-      self._graph = tf.get_default_graph()
-    if isinstance(model, tf.Graph):
-      self._graph = model
-
-    self._extra_feed = extra_feed or {}
+    self._graph = model or tf.get_default_graph()
+    assert isinstance(self._graph, tf.Graph), '"model" argument must be either tf.Graph instance or None'
+    self._extra_feed = extra_feed
+    assert isinstance(self._extra_feed, dict), '"extra_feed" must be a dictionary (tensor -> value)'
 
   def build_model(self):
     self._x = self._find_tensor('input')
