@@ -30,7 +30,7 @@ class HyperTuner(object):
     strategy_gen = as_function(strategy_params.get('strategy', 'bayesian'), presets=strategies)
     self.strategy = strategy_gen(sampler, strategy_params)
 
-    self.timeout = strategy_params.get('timeout', 10)
+    self.timeout = strategy_params.get('timeout', 0)
 
   def tune(self):
     info('Start hyper tuner')
