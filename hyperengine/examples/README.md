@@ -1,5 +1,7 @@
 # Examples
 
+All examples are self-contained to ease understanding.
+
 1. **Getting Started**
  - [**Hello World**](01_hello_word_with_mnist.py):
  a very simple example to run your existing model in Hyper-Engine environment.
@@ -14,6 +16,7 @@
  exploring and tuning all possible variations of the CNN design to get
  to the top accuracy for the MNIST dataset.
  - [**Exploring CNN architectures for CIFAR-10 dataset**](05_cnn_cifar.py):
- exploring different variations of of the CNN design for the CIFAR-10 dataset.
+ exploring different variations of the CNN design to get good accuracy for the CIFAR-10 dataset
+ (state-of-the art accuracy would require a bit more efforts - in the next examples).
  
-   Note: this example needs `tflearn` library for fetching CIFAR-10.
+   **Note**: this example needs `tflearn` library for fetching CIFAR-10.
