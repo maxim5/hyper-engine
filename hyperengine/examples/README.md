@@ -13,3 +13,7 @@
  - [**Exploring CNN architectures to beat MNIST record**](04_cnn_mnist.py):
  exploring and tuning all possible variations of the CNN design to get
  to the top accuracy for the MNIST dataset.
+ - [**Exploring CNN architectures for CIFAR-10 dataset](05_cnn_cifar.py):
+ exploring different variations of of the CNN design for the CIFAR-10 dataset.
+ 
+   Note: this example needs `tflearn` library for fetching CIFAR-10.
