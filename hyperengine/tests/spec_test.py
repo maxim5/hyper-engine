@@ -130,6 +130,14 @@ class SpecTest(unittest.TestCase):
     self.assertEqual([[1.0, 1.0]], parsed.instantiate([1.0]))
 
 
+  def test_duplicate_nodes_3(self):
+    spec = [uniform()] * 3
+    parsed = ParsedSpec(spec)
+    self.assertEqual(parsed.size(), 1)
+    self.assertEqual([0.0, 0.0, 0.0], parsed.instantiate([0.0]))
+    self.assertEqual([1.0, 1.0, 1.0], parsed.instantiate([1.0]))
+
+
   def test_merge_choice(self):
     spec = choice([uniform(0, 1), uniform(2, 3)])
     parsed = ParsedSpec(spec)
