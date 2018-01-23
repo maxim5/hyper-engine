@@ -20,9 +20,10 @@ def cnn_model(params):
     conv = tf.layers.conv2d(input,
                             filters=hp.filter_num,
                             kernel_size=hp.filter_size,
-                            padding='same', activation=ACTIVATIONS[hp.activation])
+                            padding='same',
+                            activation=ACTIVATIONS[hp.activation])
     bn = tf.layers.batch_normalization(conv, training=training) if hp.batch_norm else conv
-    dropped = tf.layers.dropout(bn, rate=hp.dropout, training=training)
+    dropped = tf.layers.dropout(bn, rate=hp.dropout, training=training) if hp.dropout else bn
     pool = tf.layers.max_pooling2d(dropped, pool_size=[2, 2], strides=[2, 2])
     return pool
 
