@@ -60,8 +60,8 @@ hyper_params_spec = hype.spec.new(
   dropout_rate = hype.spec.uniform(0.5, 0.9),
 )
 strategy_params = {
-  'io_load_dir': 'temp-mnist-train/conv-2.0',
-  'io_save_dir': 'temp-mnist-train/conv-2.0',
+  'io_load_dir': 'temp-mnist-train/example-1-3',
+  'io_save_dir': 'temp-mnist-train/example-1-3',
 }
 
 tuner = hype.HyperTuner(hyper_params_spec, solver_generator, **strategy_params)

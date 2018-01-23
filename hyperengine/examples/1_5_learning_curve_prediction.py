@@ -41,8 +41,8 @@ curve_params = {
   'burn_in': 20,
   'min_input_size': 4,
   'value_limit': 0.82,
-  'io_load_dir': 'temp-mnist-curve/conv-3.0',
-  'io_save_dir': 'temp-mnist-curve/conv-3.0',
+  'io_load_dir': 'temp-mnist-curve/example-1-5',
+  'io_save_dir': 'temp-mnist-curve/example-1-5',
 }
 curve_predictor = hype.LinearCurvePredictor(**curve_params)
 
@@ -71,8 +71,8 @@ hyper_params_spec = hype.spec.new(
   dropout_rate = hype.spec.uniform(0.5, 0.9),
 )
 strategy_params = {
-  'io_load_dir': 'temp-mnist-train/conv-3.0',
-  'io_save_dir': 'temp-mnist-train/conv-3.0',
+  'io_load_dir': 'temp-mnist-train/example-1-5',
+  'io_save_dir': 'temp-mnist-train/example-1-5',
 }
 
 tuner = hype.HyperTuner(hyper_params_spec, solver_generator, **strategy_params)

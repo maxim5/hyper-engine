@@ -100,8 +100,8 @@ hyper_params_spec = hype.spec.new(
   ),
 )
 strategy_params = {
-  'io_load_dir': 'temp-cifar10-train/conv-1.0',
-  'io_save_dir': 'temp-cifar10-train/conv-1.0',
+  'io_load_dir': 'temp-cifar10-train/example-2-2',
+  'io_save_dir': 'temp-cifar10-train/example-2-2',
 }
 
 tuner = hype.HyperTuner(hyper_params_spec, solver_generator, **strategy_params)
