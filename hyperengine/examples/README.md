@@ -2,6 +2,8 @@
 
 All examples are self-contained to ease understanding.
 
+**Note**: CIFAR-10 examples require `tflearn` [library](http://tflearn.org/) for data fetching.
+
 #### 1. Getting Started
  - [**Hello World**](1_1_hello_word_with_mnist.py):
  a very simple example to run your existing model in Hyper-Engine environment.
@@ -22,5 +24,7 @@ All examples are self-contained to ease understanding.
  - [**Exploring CNN architectures for CIFAR-10 dataset**](2_2_cnn_cifar.py):
  exploring different variations of the CNN design to get good accuracy for the CIFAR-10 dataset
  (state-of-the art accuracy would require a bit more efforts - in the next examples).
- 
-   **Note**: this example needs `tflearn` library for fetching CIFAR-10.
+ - [**Exploring architectures of All Convolutional Nets for CIFAR-10 dataset**](2_3_all_conv_net_cifar.py):
+ exploring different variations of the all-conv-nets, which achieve state-of-the-art accuracy
+ with few parameters and computational costs.
+ See ["Striving for Simplicity: The All Convolutional Net"](https://arxiv.org/abs/1412.6806) paper for details.
