@@ -12,7 +12,8 @@ from tf_util import graph_vars, get_total_dim
 
 
 class TensorflowRunner(BaseRunner):
-  def __init__(self, model=None, extra_feed={}):
+  def __init__(self, model=None, extra_feed={},
+               input='input', label='label', mode='mode', loss='loss', accuracy='accuracy', train='minimize'):
     super(TensorflowRunner, self).__init__()
 
     self._graph = model or tf.get_default_graph()
@@ -20,14 +21,16 @@ class TensorflowRunner(BaseRunner):
     self._extra_feed = extra_feed
     assert isinstance(self._extra_feed, dict), '"extra_feed" must be a dictionary (tensor -> value)'
 
-  def build_model(self):
-    self._x = self._find_tensor('input')
-    self._y = self._find_tensor('label')
-    self._mode = self._find_tensor('mode', mandatory=False)
-    self._loss = self._find_tensor('loss')
-    self._accuracy = self._find_tensor('accuracy')
-    self._minimize = self._find_op('minimize')
+    self._x = self._find_tensor(input)
+    self._y = self._find_tensor(label)
+    self._mode = self._find_tensor(mode, mandatory=False)
+    self._loss = self._find_tensor(loss)
+    self._accuracy = self._find_tensor(accuracy)
+    self._minimize = self._find_op(train)
     self._model_size = self._calc_model_size()
+
+  def build_model(self):
+    pass
 
   def init(self, **kwargs):
     self._session = kwargs['session']
