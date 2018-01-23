@@ -91,6 +91,7 @@ class NamedDictTest(unittest.TestCase):
     self.assertEqual(instance['learning_rate'], 0.001)
     self.assertEqual(instance.get('learning_rate'), 0.001)
 
+    self.assertEqual(instance.foo, None)
     self.assertEqual(instance.get('foo'), None)
     self.assertEqual(instance.get('foo', 'bar'), 'bar')
 

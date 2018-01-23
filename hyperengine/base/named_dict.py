@@ -30,6 +30,11 @@ class NamedDict(object):
   def __getitem__(self, key):
     return self.__dict__[key]
 
+  def __getattribute__(self, key):
+    if (key in ['get', 'keys', 'items', 'values']) or (key.startswith('__') and key.endswith('__')):
+      return object.__getattribute__(self, key)
+    return self.__dict__.get(key, None)
+
   def __contains__(self, key):
     return key in self.__dict__
 
