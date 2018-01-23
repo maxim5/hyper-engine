@@ -2,7 +2,7 @@
 
 All examples are self-contained to ease understanding.
 
-1. **Getting Started**
+#### 1. Getting Started
  - [**Hello World**](1_1_hello_word_with_mnist.py):
  a very simple example to run your existing model in Hyper-Engine environment.
  - [**Getting started with tuning**](1_2_getting_started_with_tuning.py):
@@ -13,7 +13,7 @@ All examples are self-contained to ease understanding.
  - [**Fine-tuning the saved model**](1_4_fine_tuning_saved_model.py):
  training the selected model further to squeeze the highest possible accuracy out of it.
 
-2. **Convolutional Neural Networks**
+#### 2. Convolutional Neural Networks
  - [**Exploring CNN architectures to beat MNIST record**](2_1_cnn_mnist.py):
  exploring and tuning all possible variations of the CNN design to get
  to the top accuracy for the MNIST dataset.
