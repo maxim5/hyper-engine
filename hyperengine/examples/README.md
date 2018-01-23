@@ -12,6 +12,8 @@ All examples are self-contained to ease understanding.
  tuning several hyper-parameters and saving the best CNN models on the disk.
  - [**Fine-tuning the saved model**](1_4_fine_tuning_saved_model.py):
  training the selected model further to squeeze the highest possible accuracy out of it.
+ - [**Learning curve prediction**](1_5_learning_curve_prediction.py):
+ optimizing the process with the learning curve prediction.
 
 #### 2. Convolutional Neural Networks
  - [**Exploring CNN architectures to beat MNIST record**](2_1_cnn_mnist.py):
