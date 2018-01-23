@@ -27,6 +27,10 @@ class NamedDictTest(unittest.TestCase):
     self.assertEqual(repr(instance), "{'foo': {'bar': {'baz': 999}, 'baz': []}}")
     self.assertItemsEqual(instance.foo.keys(), ['bar', 'baz'])
 
+    self.assertTrue('foo' in instance)
+    self.assertTrue('bar' in instance.foo)
+    self.assertTrue('baz' in instance.foo.bar)
+
     self.assertEqual(type(instance), NamedDict)
     self.assertEqual(type(instance.foo), NamedDict)
 

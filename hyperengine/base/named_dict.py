@@ -18,11 +18,20 @@ class NamedDict(object):
   def keys(self):
     return self.__dict__.keys()
 
+  def items(self):
+    return self.__dict__.items()
+
+  def values(self):
+    return self.__dict__.values()
+
   def get(self, key, default=None):
     return self.__dict__.get(key, default)
 
   def __getitem__(self, key):
     return self.__dict__[key]
+
+  def __contains__(self, key):
+    return key in self.__dict__
 
   def __repr__(self):
     return smart_str(self.__dict__)
