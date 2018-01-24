@@ -42,6 +42,10 @@ Compatibility:
 
 -  Python 2.7 and 3.5
 
+License:
+
+- `Apache 2.0 <LICENSE>`__
+
 *Hyper-Engine* is designed to be ML-platform agnostic, but currently provides only simple `TensorFlow <https://github.com/tensorflow/tensorflow>`__ binding.
 
 How to use
