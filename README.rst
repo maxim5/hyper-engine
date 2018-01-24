@@ -22,7 +22,7 @@ About
 *Hyper-Engine* is a toolbox for `model selection and hyper-parameters tuning <https://en.wikipedia.org/wiki/Hyperparameter_optimization>`__.
 It aims to provide most state-of-the-art techniques via intuitive API and with minimum dependencies.
 *Hyper-Engine* is **not a framework**, which means it doesn't enforce any structure or design to the main code,
-thus making binding local and non-intrusive.
+thus making integration local and non-intrusive.
 
 Installation
 ============
@@ -75,7 +75,7 @@ and giving names to particular tensors.
     # Now can run the model with any set of hyper-parameters
 
 
-The rest of the binding code is isolated and can be placed in the ``main`` script.
+The rest of the integration code is isolated and can be placed in the ``main`` script.
 See the examples of hyper-parameter tuning in `examples <hyperengine/examples>`__ package.
 
 --------
@@ -90,7 +90,7 @@ over which the engine is going to optimize the model. Some variables are continu
 some variables are integer values in a certain range (e.g., the number of hidden units), some variables are categorical
 and represent architecture knobs (e.g., the choice of non-linearity).
 
-You can define any of these and their ranges in ``numpy``-like fashion:
+You can define all these variables and their ranges in ``numpy``-like fashion:
 
 .. code-block:: python
 
