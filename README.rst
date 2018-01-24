@@ -85,7 +85,12 @@ Features
 Straight-forward specification
 ==============================
 
-You can define continuous and categorical parameters and their ranges:
+The crucial part of hyper-parameter tuning is the definition of a *domain*
+over which the engine is going to optimize the model. Some variables are continuous (e.g., the learning rate),
+some variables are integer values in a certain range (e.g., the number of hidden units), some variables are categorical
+and represent architecture knobs (e.g., the choice of non-linearity).
+
+You can define any of these and their ranges in ``numpy``-like fashion:
 
 .. code-block:: python
 
@@ -98,10 +103,11 @@ You can define continuous and categorical parameters and their ranges:
         'filters': [[3, 3, spec.choice(range(32, 48))],     # an integer between [32, 48]
                     [3, 3, spec.choice(range(64, 96))],     # an integer between [64, 96]
                     [3, 3, spec.choice(range(128, 192))]],  # an integer between [128, 192]
-        'activation': spec.choice(['relu', 'leaky_relu', 'prelu', 'elu']),  # 1 of 4
+                                                            # a categorical range: 1 of 4 activations
+        'activation': spec.choice(['relu', 'leaky_relu', 'prelu', 'elu']),
         'down_sample': {
           'size': [2, 2],
-          'pooling': spec.choice(['max_pool', 'avg_pool'])  # 1 of 2
+          'pooling': spec.choice(['max_pool', 'avg_pool'])  # a categorical range: 1 of 2 pooling methods
         },
         'residual': spec.random_bool(),                     # either True or False
         'dropout': spec.uniform(0.75, 1.0),                 # a uniform continuous range
