@@ -5,7 +5,7 @@ Hyper-parameters Tuning for Machine Learning
 - `Overview <#overview>`__
     - `About <#about>`__
     - `Installation <#installation>`__
-    - `Examples <#examples>`__
+    - `How to Use <#how-to-use>`__
 - `Features <#features>`__
     - `Straight-forward specification <#straight-forward-specification>`__
     - `Exploration-exploitation trade-off <#exploration-exploitation-trade-off>`__
@@ -21,6 +21,8 @@ About
 
 *Hyper-Engine* is a toolbox for `model selection and hyper-parameters tuning <https://en.wikipedia.org/wiki/Hyperparameter_optimization>`__.
 It aims to provide most state-of-the-art techniques via intuitive API and with minimum dependencies.
+*Hyper-Engine* is **not a framework**, which means it doesn't enforce any structure or design to the main code,
+thus making binding local and non-intrusive.
 
 Installation
 ============
@@ -38,13 +40,40 @@ Dependencies:
 
 Compatibility:
 
--  Python 2.7 (3.5 is coming)
+-  Python 2.7 and 3.5
 
 *Hyper-Engine* is designed to be ML-platform agnostic, but currently provides only simple `TensorFlow <https://github.com/tensorflow/tensorflow>`__ binding.
 
-Examples
-========
+How to Use
+==========
 
+Adapting your code to *Hyper-Engine* usually boils down to migrating hard-coded hyper-parameters to a dictionary (or an object)
+and giving names to particular tensors.
+
+**Before:**
+
+.. code-block:: python
+
+    def my_model():
+      x = tf.placeholder(...)
+      y = tf.placeholder(...)
+
+      optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.01)
+      ...
+
+**After:**
+
+.. code-block:: python
+
+    def my_model(params):
+      x = tf.placeholder(..., name='input')
+      y = tf.placeholder(..., name='label')
+
+      optimizer = tf.train.GradientDescentOptimizer(learning_rate=params['learning_rate'])
+      ...
+
+
+The rest of the binding code is isolated and can be placed in the ``main`` script.
 See the examples of hyper-parameter tuning in `examples <hyperengine/examples>`__ package.
 
 --------
