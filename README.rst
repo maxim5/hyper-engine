@@ -103,8 +103,7 @@ You can define all these variables and their ranges in ``numpy``-like fashion:
         'filters': [[3, 3, spec.choice(range(32, 48))],     # an integer between [32, 48]
                     [3, 3, spec.choice(range(64, 96))],     # an integer between [64, 96]
                     [3, 3, spec.choice(range(128, 192))]],  # an integer between [128, 192]
-                                                            # a categorical range: 1 of 4 activations
-        'activation': spec.choice(['relu', 'leaky_relu', 'prelu', 'elu']),
+        'activation': spec.choice(['relu','prelu','elu']),  # a categorical range: 1 of 3 activations
         'down_sample': {
           'size': [2, 2],
           'pooling': spec.choice(['max_pool', 'avg_pool'])  # a categorical range: 1 of 2 pooling methods
