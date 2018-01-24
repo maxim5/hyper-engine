@@ -28,3 +28,7 @@ All examples are self-contained to ease understanding.
  exploring different variations of the all-conv-nets, which achieve state-of-the-art accuracy
  with few parameters and computational costs.
  See ["Striving for Simplicity: The All Convolutional Net"](https://arxiv.org/abs/1412.6806) paper for details.
+
+#### 3. Recurrent Neural Networks
+ - [**LSTM to classify MNIST digits**](3_1_lstm_mnist.py):
+ recurrent neural networks can process images too. Let's see if it can get to 99% with right hyper-parameters.
