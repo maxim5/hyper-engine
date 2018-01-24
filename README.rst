@@ -57,7 +57,7 @@ and giving names to particular tensors.
     def my_model():
       x = tf.placeholder(...)
       y = tf.placeholder(...)
-
+      ...
       optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.01)
       ...
 
@@ -68,9 +68,11 @@ and giving names to particular tensors.
     def my_model(params):
       x = tf.placeholder(..., name='input')
       y = tf.placeholder(..., name='label')
-
+      ...
       optimizer = tf.train.GradientDescentOptimizer(learning_rate=params['learning_rate'])
       ...
+
+    # Now can run the model with any set of hyper-parameters
 
 
 The rest of the binding code is isolated and can be placed in the ``main`` script.
@@ -83,22 +85,26 @@ Features
 Straight-forward specification
 ==============================
 
+You can define continuous and categorical parameters and their ranges:
+
 .. code-block:: python
 
     hyper_params_spec = {
-      'init_sigma': 10**spec.uniform(-1.5, -1),
       'optimizer': {
-        'learning_rate': 10**spec.uniform(-3.5, -2.5),
-        'epsilon': 1e-8,
+        'learning_rate': 10**spec.uniform(-3, -1),          # makes the continuous range [0.1, 0.001]
+        'epsilon': 1e-8,                                    # constants work too
       },
       'conv': {
-        'filters': [[3, 3, spec.choice(range(32, 48))],
-                    [3, 3, spec.choice(range(72, 96))],
-                    [3, 3, spec.choice(range(160, 192))]],
-        'activation': spec.choice(['relu', 'leaky_relu', 'prelu', 'elu']),
-        'down_sample': {'size': [2, 2], 'pooling': spec.choice(['max_pool', 'avg_pool'])},
-        'residual': spec.random_bit(),
-        'dropout': spec.uniform(0.75, 1.0),
+        'filters': [[3, 3, spec.choice(range(32, 48))],     # an integer between [32, 48]
+                    [3, 3, spec.choice(range(64, 96))],     # an integer between [64, 96]
+                    [3, 3, spec.choice(range(128, 192))]],  # an integer between [128, 192]
+        'activation': spec.choice(['relu', 'leaky_relu', 'prelu', 'elu']),  # 1 of 4
+        'down_sample': {
+          'size': [2, 2],
+          'pooling': spec.choice(['max_pool', 'avg_pool'])  # 1 of 2
+        },
+        'residual': spec.random_bool(),                     # either True or False
+        'dropout': spec.uniform(0.75, 1.0),                 # a uniform continuous range
       },
     }
 
