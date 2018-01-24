@@ -26,18 +26,21 @@ class BaseIO(object):
     if directory is None:
       return False
     if not os.path.exists(directory):
+      vlog('Creating a directory ', directory)
       os.makedirs(directory)
     return True
 
   @staticmethod
   def _load_dict(from_file):
     if not os.path.exists(from_file):
+      debug('Cannot load a dict. File does not exist: ', from_file)
       return {}
     try:
       with open(from_file, 'r') as file_:
         line = file_.readline()
         return str_to_dict(line)
-    except:
+    except BaseException as e:
+      warn('Cannot load a dict. Error: ', e.message)
       return {}
 
 
