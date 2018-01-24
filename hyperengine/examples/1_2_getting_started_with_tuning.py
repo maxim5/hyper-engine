@@ -31,7 +31,7 @@ def cnn_model(params):
 
   return locals()  # to avoid GC
 
-tf_data_sets = input_data.read_data_sets('temp-mnist-data', one_hot=True)
+tf_data_sets = input_data.read_data_sets('temp-mnist/data', one_hot=True)
 convert = lambda data_set: hype.DataSet(data_set.images.reshape((-1, 28, 28, 1)), data_set.labels)
 data = hype.Data(train=convert(tf_data_sets.train),
                  validation=convert(tf_data_sets.validation),
@@ -54,8 +54,8 @@ hyper_params_spec = {
   'learning_rate': 10**hype.spec.uniform(-1, -3),
 }
 strategy_params = {
-  'io_load_dir': 'temp-mnist-train/example-1-2',
-  'io_save_dir': 'temp-mnist-train/example-1-2',
+  'io_load_dir': 'temp-mnist/example-1-2',
+  'io_save_dir': 'temp-mnist/example-1-2',
 }
 
 tuner = hype.HyperTuner(hyper_params_spec, solver_generator, **strategy_params)

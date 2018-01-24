@@ -12,7 +12,7 @@ DOWN_SAMPLES = {name: getattr(tf.layers, name) for name in ['max_pooling2d', 'av
 
 def get_cifar10_data(validation_size=5000, one_hot=True):
   from tflearn.datasets import cifar10
-  (x_train, y_train), (x_test, y_test) = cifar10.load_data('temp-cifar10-data', one_hot=one_hot)
+  (x_train, y_train), (x_test, y_test) = cifar10.load_data('temp-cifar10/data', one_hot=one_hot)
   x_val = x_train[:validation_size]
   y_val = y_train[:validation_size]
   x_train = x_train[validation_size:]
@@ -64,7 +64,7 @@ def solver_generator(params):
     'epochs': 10,
     'evaluate_test': True,
     'eval_flexible': False,
-    'save_dir': 'temp-cifar10-model-zoo/{date}-{random_id}',
+    'save_dir': 'temp-cifar10/model-zoo/example-2-3-{date}-{random_id}',
     'save_accuracy_limit': 0.7,
   }
   cnn_model(params)
@@ -133,8 +133,8 @@ hyper_params_spec = hype.spec.new(
   ],
 )
 strategy_params = {
-  'io_load_dir': 'temp-cifar10-train/example-2-3',
-  'io_save_dir': 'temp-cifar10-train/example-2-3',
+  'io_load_dir': 'temp-cifar10/example-2-3',
+  'io_save_dir': 'temp-cifar10/example-2-3',
 }
 
 tuner = hype.HyperTuner(hyper_params_spec, solver_generator, **strategy_params)

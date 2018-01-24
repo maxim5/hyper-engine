@@ -37,7 +37,7 @@ def cnn_model(params):
 
   return locals()  # to avoid GC
 
-tf_data_sets = input_data.read_data_sets('temp-mnist-data', one_hot=True)
+tf_data_sets = input_data.read_data_sets('temp-mnist/data', one_hot=True)
 convert = lambda data_set: hype.DataSet(data_set.images.reshape((-1, 28, 28, 1)), data_set.labels)
 data = hype.Data(train=convert(tf_data_sets.train),
                  validation=convert(tf_data_sets.validation),
@@ -54,7 +54,8 @@ solver_params = {
 }
 
 model_io = hype.TensorflowModelIO(**solver_params)
-hyper_params = model_io.load_hyper_params() or {}
+hyper_params = model_io.load_hyper_params()
+assert hyper_params, 'No model found in "%s"' % model_path
 hyper_params = hype.spec.new(hyper_params)  # convert a dict to an object
 
 cnn_model(hyper_params)

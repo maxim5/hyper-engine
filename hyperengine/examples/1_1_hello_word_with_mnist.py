@@ -26,7 +26,7 @@ optimizer = tf.train.AdamOptimizer(learning_rate=0.001)
 train_op = optimizer.minimize(loss_op, name='minimize')
 accuracy = tf.reduce_mean(tf.cast(tf.equal(tf.argmax(logits, 1), tf.argmax(y, 1)), tf.float32), name='accuracy')
 
-tf_data_sets = input_data.read_data_sets('temp-mnist-data', one_hot=True)
+tf_data_sets = input_data.read_data_sets('temp-mnist/data', one_hot=True)
 convert = lambda data_set: hype.DataSet(data_set.images.reshape((-1, 28, 28, 1)), data_set.labels)
 data = hype.Data(train=convert(tf_data_sets.train),
                  validation=convert(tf_data_sets.validation),

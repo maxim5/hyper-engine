@@ -31,7 +31,7 @@ def cnn_model(params):
 
   return locals()  # to avoid GC
 
-tf_data_sets = input_data.read_data_sets('temp-mnist-data', one_hot=True)
+tf_data_sets = input_data.read_data_sets('temp-mnist/data', one_hot=True)
 convert = lambda data_set: hype.DataSet(data_set.images.reshape((-1, 28, 28, 1)), data_set.labels)
 data = hype.Data(train=convert(tf_data_sets.train),
                  validation=convert(tf_data_sets.validation),
@@ -41,8 +41,8 @@ curve_params = {
   'burn_in': 20,
   'min_input_size': 4,
   'value_limit': 0.82,
-  'io_load_dir': 'temp-mnist-curve/example-1-5',
-  'io_save_dir': 'temp-mnist-curve/example-1-5',
+  'io_load_dir': 'temp-mnist/example-1-5',
+  'io_save_dir': 'temp-mnist/example-1-5',
 }
 curve_predictor = hype.LinearCurvePredictor(**curve_params)
 
@@ -55,7 +55,7 @@ def solver_generator(params):
     'result_metric': curve_predictor.result_metric(),
     'evaluate_test': True,
     'eval_flexible': False,
-    'save_dir': 'temp-mnist-model-zoo/{date}-{random_id}',
+    'save_dir': 'temp-mnist/model-zoo/example-1-5-{date}-{random_id}',
     'save_accuracy_limit': 0.9930,
   }
   cnn_model(params)
@@ -71,8 +71,8 @@ hyper_params_spec = hype.spec.new(
   dropout_rate = hype.spec.uniform(0.5, 0.9),
 )
 strategy_params = {
-  'io_load_dir': 'temp-mnist-train/example-1-5',
-  'io_save_dir': 'temp-mnist-train/example-1-5',
+  'io_load_dir': 'temp-mnist/example-1-5',
+  'io_save_dir': 'temp-mnist/example-1-5',
 }
 
 tuner = hype.HyperTuner(hyper_params_spec, solver_generator, **strategy_params)
