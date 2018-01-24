@@ -5,7 +5,7 @@ Hyper-parameters Tuning for Machine Learning
 - `Overview <#overview>`__
     - `About <#about>`__
     - `Installation <#installation>`__
-    - `How to Use <#how-to-use>`__
+    - `How to use <#how-to-use>`__
 - `Features <#features>`__
     - `Straight-forward specification <#straight-forward-specification>`__
     - `Exploration-exploitation trade-off <#exploration-exploitation-trade-off>`__
@@ -44,7 +44,7 @@ Compatibility:
 
 *Hyper-Engine* is designed to be ML-platform agnostic, but currently provides only simple `TensorFlow <https://github.com/tensorflow/tensorflow>`__ binding.
 
-How to Use
+How to use
 ==========
 
 Adapting your code to *Hyper-Engine* usually boils down to migrating hard-coded hyper-parameters to a dictionary (or an object)
@@ -114,10 +114,12 @@ You can define any of these and their ranges in ``numpy``-like fashion:
       },
     }
 
-Note that ``10**spec.uniform(-3, -1)`` is not the same distribution as ``spec.uniform(0.001, 0.1)`` (though defines is the
-same range of values). In the first case, the whole logarithmic spectrum ``(-3, -1)`` is equally probable, while in
-the second case, small values around ``0.001`` are much less likely than the values around ``0.05``. This outlines the
-importance of random variable transformations and arithmetic operations.
+Note that ``10**spec.uniform(-3, -1)`` is not the same *distribution* as ``spec.uniform(0.001, 0.1)``
+(though they both define the same *range* of values).
+In the first case, the whole logarithmic spectrum ``(-3, -1)`` is equally probable, while in
+the second case, small values around ``0.001`` are much less likely than the values around the mean ``0.0495``.
+Specifying the following domain range for the learning rate - ``spec.uniform(0.001, 0.1)`` - will likely skew the results
+towards higher learning rates. This outlines the importance of random variable transformations and arithmetic operations.
 
 Exploration-exploitation trade-off
 ==================================
