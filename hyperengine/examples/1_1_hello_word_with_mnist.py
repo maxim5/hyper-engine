@@ -1,6 +1,18 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""A hello-world example. All hyper-parameters are hard-coded as constants.
+In order to run this model, it's only necessary to name the tensors and ops
+so that hyper-engine could find them. By convention, hyper-engine looks up the following:
+- input
+- label
+- loss
+- accuracy
+- minimize
+These are the defaults and they are customizable.
+The whole integration is creation and start of the solver.
+"""
+
 __author__ = 'maxim'
 
 import tensorflow as tf
