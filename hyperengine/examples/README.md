@@ -32,3 +32,6 @@ All examples are self-contained to ease understanding.
 #### 3. Recurrent Neural Networks
  - [**LSTM to classify MNIST digits**](3_1_lstm_mnist.py):
  recurrent neural networks can process images too. Let's see if it can get to 99% with right hyper-parameters.
+ - [**RNN to detect SMS spam**](3_2_rnn_sms_spam_detector.py):
+ solving a simple NLP problem with RNN. This example shows how hyper-parameters can be used in data processing.
+ 
