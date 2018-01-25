@@ -4,11 +4,11 @@
 __author__ = 'maxim'
 
 import tensorflow as tf
-from tensorflow.python.client import device_lib
 
 from hyperengine.model import BaseSolver
 from tensorflow_model_io import TensorflowModelIO
 from tensorflow_runner import TensorflowRunner
+from tf_util import is_gpu_available
 
 
 class TensorflowSolver(BaseSolver):
@@ -22,7 +22,7 @@ class TensorflowSolver(BaseSolver):
     self._model_io = model_io if model_io is not None else TensorflowModelIO(**params)
     self._save_accuracy_limit = params.get('save_accuracy_limit', 0)
 
-    params['eval_flexible'] = params.get('eval_flexible', True) and _is_gpu_available
+    params['eval_flexible'] = params.get('eval_flexible', True) and is_gpu_available()
     super(TensorflowSolver, self).__init__(runner, data, hyper_params, augmentation, result_metric, **params)
 
   def create_session(self):
@@ -60,10 +60,3 @@ class TensorflowSolver(BaseSolver):
     self._model_io.load_session(self._session, directory, log_level)
     results = self._model_io.load_results(directory, log_level)
     return results or {}
-
-
-def tf_is_gpu():
-  local_devices = device_lib.list_local_devices()
-  return len([x for x in local_devices if x.device_type == 'GPU']) > 0
-
-_is_gpu_available = tf_is_gpu()
