@@ -20,7 +20,8 @@ All examples are self-contained to ease understanding.
 #### 2. Convolutional Neural Networks
  - [**Exploring CNN architectures to beat MNIST record**](2_1_cnn_mnist.py):
  exploring and tuning all possible variations of the CNN design to get
- to the top accuracy for the MNIST dataset.
+ to the [top accuracy](http://rodrigob.github.io/are_we_there_yet/build/classification_datasets_results.html#4d4e495354) 
+ for the MNIST dataset.
  - [**Exploring CNN architectures for CIFAR-10 dataset**](2_2_cnn_cifar.py):
  exploring different variations of the CNN design to get good accuracy for the CIFAR-10 dataset
  (state-of-the art accuracy would require a bit more efforts - in the next examples).
