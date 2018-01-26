@@ -98,7 +98,7 @@ def download_if_needed(url, path, filename=None):
     info('Downloading %s, please wait...' % filename)
     result_path, _ = urllib.request.urlretrieve(url, full_path, _report_hook)
     stat = os.stat(result_path)
-    info('Successfully downloaded', filename, stat.st_size, 'b')
+    info('Successfully downloaded "%s" (%d Kb)' % (filename, stat.st_size / 1024))
     return result_path
   else:
     debug('Already downloaded:', full_path)
