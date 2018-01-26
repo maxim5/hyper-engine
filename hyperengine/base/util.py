@@ -6,8 +6,11 @@ __author__ = 'maxim'
 import ast
 import collections
 import numbers
+import os
 import random
 import string
+import sys
+from six.moves import urllib
 
 import numpy as np
 
@@ -82,3 +85,33 @@ def as_numeric_function(val, presets, default=None):
     return const
 
   return as_function(val, presets, default)
+
+
+def download_if_needed(url, path, filename=None):
+  from .logging import info, debug
+
+  if not os.path.exists(path):
+    os.makedirs(path)
+  filename = filename or os.path.basename(url)
+  full_path = os.path.join(path, filename)
+  if not os.path.exists(full_path):
+    info('Downloading %s, please wait...' % filename)
+    result_path, _ = urllib.request.urlretrieve(url, full_path, _report_hook)
+    stat = os.stat(result_path)
+    info('Successfully downloaded', filename, stat.st_size, 'b')
+    return result_path
+  else:
+    debug('Already downloaded:', full_path)
+  return full_path
+
+
+def _report_hook(block_num, block_size, total_size):
+  read_so_far = block_num * block_size
+  if total_size > 0:
+    percent = read_so_far * 1e2 / total_size
+    s = '\r%5.1f%% %*d / %d' % (percent, len(str(total_size)), read_so_far, total_size)
+    sys.stdout.write(s)
+    if read_so_far >= total_size:  # near the end
+      sys.stdout.write('\n')
+  else:  # total size is unknown
+    sys.stdout.write('read %d\n' % (read_so_far,))
