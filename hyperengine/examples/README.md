@@ -26,7 +26,7 @@ All examples are self-contained to ease understanding.
  exploring different variations of the CNN design to get good accuracy for the CIFAR-10 dataset
  (state-of-the art accuracy would require a bit more efforts - in the next examples).
  - [**Exploring architectures of All Convolutional Nets for CIFAR-10 dataset**](2_3_all_conv_net_cifar.py):
- exploring different variations of the all-conv-nets, which achieve state-of-the-art accuracy
+ exploring different variations of the fully convolutional nets (FCNN), which achieve state-of-the-art accuracy
  with few parameters and computational costs.
  See ["Striving for Simplicity: The All Convolutional Net"](https://arxiv.org/abs/1412.6806) paper for details.
 
@@ -34,5 +34,5 @@ All examples are self-contained to ease understanding.
  - [**LSTM to classify MNIST digits**](3_1_lstm_mnist.py):
  recurrent neural networks can process images too. Let's see if it can get to 99% with right hyper-parameters.
  - [**RNN to detect SMS spam**](3_2_rnn_sms_spam_detector.py):
- solving a simple NLP problem with RNN. This example shows how hyper-parameters can be used in data processing.
- 
+ solving a simple NLP problem with different types of RNN. 
+ This example shows how hyper-parameters can be used in data processing.
