@@ -35,3 +35,8 @@ All examples are complete runnable scripts and are self-contained to ease unders
  - [**RNN to detect SMS spam**](3_2_rnn_sms_spam_detector.py):
  solving a simple NLP problem with different types of RNN. 
  This example shows how hyper-parameters can be used in data processing.
+
+### 4. Natutal Language Processing
+ - [**Word2Vec training**](4_1_word2vec.py):
+ an example of custom data provider to train Word2Vec embedding vectors.
+ 
