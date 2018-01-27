@@ -38,5 +38,6 @@ All examples are complete runnable scripts and are self-contained to ease unders
 
 ### 4. Natutal Language Processing
  - [**Word2Vec training**](4_1_word2vec.py):
- an example of custom data provider to train Word2Vec embedding vectors.
+ an example of custom data provider to train Word2Vec embedding vectors. In addition, it shows how to use the solver
+ without accuracy metric and validation.
  
