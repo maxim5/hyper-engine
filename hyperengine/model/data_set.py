@@ -5,6 +5,35 @@ __author__ = 'maxim'
 
 import numpy as np
 
+
+class DataProvider(object):
+  pass
+
+
+class IterableDataProvider(DataProvider):
+  @property
+  def size(self):
+    raise NotImplementedError
+
+  @property
+  def index(self):
+    raise NotImplementedError
+
+  @property
+  def epochs_completed(self):
+    raise NotImplementedError
+
+  @property
+  def just_completed(self):
+    raise NotImplementedError
+
+  def reset_counters(self):
+    raise NotImplementedError
+
+  def next_batch(self, batch_size):
+    raise NotImplementedError
+
+
 class DataSet(object):
   """
   A labeled data set. Both examples and labels are stored as numpy arrays.
@@ -31,6 +60,7 @@ class DataSet(object):
     self.step = 0
     self.epochs_completed = 0
     self.index_in_epoch = 0
+    self.just_completed = False
 
   def next_batch(self, batch_size):
     """
@@ -71,9 +101,7 @@ class Data(object):
 
   def reset_counters(self):
     self.train.reset_counters()
-    self.validation.reset_counters()
-    self.test.reset_counters()
-
-  def merge_validation_to_train(self):
-    self.train = merge_data_sets(self.train, self.validation)
-    self.validation = self.test
+    if self.validation:
+      self.validation.reset_counters()
+    if self.test:
+      self.test.reset_counters()
