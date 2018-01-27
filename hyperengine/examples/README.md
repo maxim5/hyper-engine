@@ -1,8 +1,7 @@
 # Examples
 
-All examples are self-contained to ease understanding.
-
-**Note**: CIFAR-10 examples require `tflearn` [library](http://tflearn.org/) for data fetching.
+All examples are complete runnable scripts and are self-contained to ease understanding 
+(the only exception is dataset fetching that has been moved to [`common.py`](common.py)).
 
 #### 1. Getting Started
  - [**Hello World**](1_1_hello_word_with_mnist.py):
