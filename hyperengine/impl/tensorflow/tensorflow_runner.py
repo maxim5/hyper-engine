@@ -25,7 +25,7 @@ class TensorflowRunner(BaseRunner):
     self._y = self._find_tensor(label)
     self._mode = self._find_tensor(mode, mandatory=False)
     self._loss = self._find_tensor(loss)
-    self._accuracy = self._find_tensor(accuracy)
+    self._accuracy = self._find_tensor(accuracy, mandatory=False)
     self._minimize = self._find_op(train)
     self._model_size = self._calc_model_size()
 
@@ -43,8 +43,12 @@ class TensorflowRunner(BaseRunner):
 
   def evaluate(self, batch_x, batch_y):
     feed_dict = self._get_feed_dict(batch_x, batch_y, 'test')
-    loss, accuracy = self._session.run([self._loss, self._accuracy], feed_dict=feed_dict)
-    return {'loss': loss, 'accuracy': accuracy}
+    if self._accuracy:
+      loss, accuracy = self._session.run([self._loss, self._accuracy], feed_dict=feed_dict)
+      return {'loss': loss, 'accuracy': accuracy}
+    else:
+      loss = self._session.run(self._loss, feed_dict=feed_dict)
+      return {'loss': loss}
 
   def terminate(self):
     tf.reset_default_graph()
