@@ -5,21 +5,11 @@ __author__ = 'maxim'
 
 import tensorflow as tf
 
+from common import get_cifar10
 import hyperengine as hype
 
 ACTIVATIONS = {name: getattr(tf.nn, name) for name in ['relu', 'relu6', 'elu', 'sigmoid', 'tanh', 'leaky_relu']}
 DOWN_SAMPLES = {name: getattr(tf.layers, name) for name in ['max_pooling2d', 'average_pooling2d']}
-
-def get_cifar10_data(validation_size=5000, one_hot=True):
-  from tflearn.datasets import cifar10
-  (x_train, y_train), (x_test, y_test) = cifar10.load_data('temp-cifar10/data', one_hot=one_hot)
-  x_val = x_train[:validation_size]
-  y_val = y_train[:validation_size]
-  x_train = x_train[validation_size:]
-  y_train = y_train[validation_size:]
-  return hype.Data(train=hype.DataSet(x_train, y_train),
-                   validation=hype.DataSet(x_val, y_val),
-                   test=hype.DataSet(x_test, y_test))
 
 def cnn_model(params):
   x = tf.placeholder(tf.float32, [None, 32, 32, 3], name='input')
@@ -55,7 +45,13 @@ def cnn_model(params):
 
   return locals()  # to avoid GC
 
-data = get_cifar10_data()
+(x_train, y_train), (x_val, y_val), (x_test, y_test) = get_cifar10(path='temp-cifar10/data',
+                                                                   one_hot=True,
+                                                                   validation_size=5000)
+data = hype.Data(train=hype.DataSet(x_train, y_train),
+                 validation=hype.DataSet(x_val, y_val),
+                 test=hype.DataSet(x_test, y_test))
+
 
 def solver_generator(params):
   solver_params = {
@@ -65,7 +61,7 @@ def solver_generator(params):
     'evaluate_test': True,
     'eval_flexible': False,
     'save_dir': 'temp-cifar10/model-zoo/example-2-3-{date}-{random_id}',
-    'save_accuracy_limit': 0.7,
+    'save_accuracy_limit': 0.70,
   }
   cnn_model(params)
   solver = hype.TensorflowSolver(data=data, hyper_params=params, **solver_params)
