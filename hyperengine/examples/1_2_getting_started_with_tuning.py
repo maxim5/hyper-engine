@@ -1,6 +1,15 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""Optimizing a simple CNN model with one hyper-parameter (learning rate).
+
+The model itself isn't different from "Hello World Example", except for the hyper-parameter that
+is now taken from the input dictionary: `params['learning_rate']`.
+
+Also pay attention to `strategy_params` argument that dictates to save Bayesian optimization parameters
+automatically and continue from the last saved state on subsequent runs.
+"""
+
 __author__ = 'maxim'
 
 import tensorflow as tf

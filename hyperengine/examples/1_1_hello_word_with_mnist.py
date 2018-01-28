@@ -6,9 +6,10 @@ In order to run this model, it's only necessary to name the tensors and ops
 so that hyper-engine could find them. By convention, hyper-engine looks up the following:
 - input
 - label
-- loss
-- accuracy
+- mode     (optional)
 - minimize
+- loss     (optional)
+- accuracy (optional)
 These are the defaults and they are customizable.
 The whole integration is creation and start of the solver.
 """
