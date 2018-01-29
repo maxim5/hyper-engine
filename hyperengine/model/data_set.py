@@ -141,6 +141,10 @@ class Data(object):
   """
 
   def __init__(self, train, validation, test):
+    assert train is not None, 'Training set must be not None'
+    assert train is not validation, 'Validation set can not coincide with the training set'
+    assert train is not test, 'Test set can not coincide with the training set'
+
     self.train = train
     self.validation = validation
     self.test = test
