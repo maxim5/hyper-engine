@@ -1,11 +1,11 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-
 __author__ = 'maxim'
 
 import inspect
 
 from ..base import *
+from .data_set import IterableDataProvider
 
 metrics = {
   'max': lambda curve: max(curve) if curve else 0,
@@ -126,7 +126,7 @@ class BaseSolver(object):
         warn('Validation set is not provided. Skip val evaluation')
         return
 
-      eval_ = self._evaluate(batch_x=self._val_set.x, batch_y=self._val_set.y)
+      eval_ = self._evaluate(self._val_set)
       self._log_iteration('validation_accuracy', eval_.get('loss'), eval_.get('accuracy'), True)
       return eval_
 
@@ -138,7 +138,7 @@ class BaseSolver(object):
       warn('Test set is not provided. Skip test evaluation')
       return
 
-    eval_ = self._evaluate(batch_x=self._test_set.x, batch_y=self._test_set.y)
+    eval_ = self._evaluate(self._test_set)
     test_accuracy = eval_.get('accuracy')
     if test_accuracy is None:
       warn('Test accuracy evaluation is not available')
@@ -161,20 +161,19 @@ class BaseSolver(object):
       else:
         info('%s: -- no loss or accuracy defined --' % message)
 
-  def _evaluate(self, batch_x, batch_y):
-    size = len(batch_x)
-    assert len(batch_y) == size
-
-    if size <= self._eval_batch_size:
-      return self._runner.evaluate(batch_x, batch_y)
+  def _evaluate(self, data_set):
+    assert isinstance(data_set, IterableDataProvider), 'Currently can evaluate only IterableDataProviders'
+    size = data_set.size
+    data_set.reset_counters()
 
     result = {'accuracy': 0, 'loss': 0, 'misclassified_x': [], 'misclassified_y': []}
-    for start, end in mini_batch(size, self._eval_batch_size):
-      eval = self._runner.evaluate(batch_x=batch_x[start:end], batch_y=batch_y[start:end])
-      result['accuracy'] += eval.get('accuracy', 0) * len(batch_x[start:end])
-      result['loss'] += eval.get('loss', 0) * len(batch_x[start:end])
-      result['misclassified_x'].append(eval.get('misclassified_x'))
-      result['misclassified_y'].append(eval.get('misclassified_y'))
+    while data_set.epochs_completed < 1:
+      batch_x, batch_y = data_set.next_batch(self._eval_batch_size)
+      eval_ = self._runner.evaluate(batch_x=batch_x, batch_y=batch_y)
+      result['accuracy'] += eval_ .get('accuracy', 0) * len(batch_x)
+      result['loss'] += eval_ .get('loss', 0) * len(batch_x)
+      result['misclassified_x'].append(eval_ .get('misclassified_x'))
+      result['misclassified_y'].append(eval_ .get('misclassified_y'))
     result['accuracy'] /= size
     result['loss'] /= size
     result['misclassified_x'] = safe_concat(result['misclassified_x'])
