@@ -24,7 +24,7 @@ class TensorflowRunner(BaseRunner):
     self._x = self._find_tensor(input)
     self._y = self._find_tensor(label)
     self._mode = self._find_tensor(mode, mandatory=False)
-    self._loss = self._find_tensor(loss)
+    self._loss = self._find_tensor(loss, mandatory=False)
     self._accuracy = self._find_tensor(accuracy, mandatory=False)
     self._minimize = self._find_op(train)
     self._model_size = self._calc_model_size()
@@ -43,12 +43,16 @@ class TensorflowRunner(BaseRunner):
 
   def evaluate(self, batch_x, batch_y):
     feed_dict = self._get_feed_dict(batch_x, batch_y, 'test')
-    if self._accuracy:
-      loss, accuracy = self._session.run([self._loss, self._accuracy], feed_dict=feed_dict)
-      return {'loss': loss, 'accuracy': accuracy}
-    else:
+    if self._loss is None and self._accuracy is None:
+      return {}
+    if self._accuracy is None:
       loss = self._session.run(self._loss, feed_dict=feed_dict)
       return {'loss': loss}
+    if self._loss is None:
+      accuracy = self._session.run(self._accuracy, feed_dict=feed_dict)
+      return {'accuracy': accuracy}
+    loss, accuracy = self._session.run([self._loss, self._accuracy], feed_dict=feed_dict)
+    return {'loss': loss, 'accuracy': accuracy}
 
   def terminate(self):
     tf.reset_default_graph()
@@ -74,6 +78,7 @@ class TensorflowRunner(BaseRunner):
       return self._graph.get_tensor_by_name(name + ':0')
     except KeyError:
       if not mandatory:
+        debug('Tensor not found in Tensorflow graph:', name)
         return None
       warn('Failed to infer a tensor "%s" in Tensorflow graph. '
            'Most likely, you should add "name=\'%s\'" in the placeholder/tensor definition' % (name, name))
@@ -84,6 +89,7 @@ class TensorflowRunner(BaseRunner):
       return self._graph.get_operation_by_name(name)
     except KeyError:
       if default is not None:
+        debug('Op not found in Tensorflow graph:', name)
         return default
       warn('Failed to infer an op "%s" in Tensorflow graph. '
            'Most likely, you should add "name=\'%s\'" in the op definition' % (name, name))

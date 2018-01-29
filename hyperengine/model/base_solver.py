@@ -1,11 +1,11 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-
 __author__ = 'maxim'
 
 import inspect
 
 from ..base import *
+from .data_set import IterableDataProvider
 
 metrics = {
   'max': lambda curve: max(curve) if curve else 0,
@@ -33,7 +33,7 @@ class BaseSolver(object):
     self._dynamic_epochs = params.get('dynamic_epochs')
     self._stop_condition = params.get('stop_condition')
     self._batch_size = params.get('batch_size', 16)
-    self._eval_batch_size = params.get('eval_batch_size', self._val_set.size)
+    self._eval_batch_size = params.get('eval_batch_size', self._val_set.size if self._val_set else 0)
     self._eval_flexible = params.get('eval_flexible', True)
     self._eval_train_every = params.get('eval_train_every', 10) if not self._eval_flexible else 1e1000
     self._eval_validation_every = params.get('eval_validation_every', 100) if not self._eval_flexible else 1e1000
@@ -50,8 +50,9 @@ class BaseSolver(object):
         batch_x, batch_y = self._train_set.next_batch(self._batch_size)
         batch_x = self.augment(batch_x)
         self._runner.run_batch(batch_x, batch_y)
+        self._evaluate_train(batch_x, batch_y)
 
-        eval_result = self._evaluate_validation(batch_x, batch_y)
+        eval_result = self._evaluate_validation()
         val_accuracy = eval_result.get('accuracy') if eval_result is not None else None
         if val_accuracy is not None:
           self._val_accuracy_curve.append(val_accuracy)
@@ -65,9 +66,7 @@ class BaseSolver(object):
             info('Solver stopped due to the stop condition')
             break
 
-      if self._eval_test:
-        self._evaluate_test()
-
+      self._evaluate_test()
     return self._result_metric(self._val_accuracy_curve)
 
   def create_session(self):
@@ -105,48 +104,76 @@ class BaseSolver(object):
       elif args == 2:
         new_epochs = self._dynamic_epochs(curve)
       else:
-        warn('Invalid \"dynamic_epochs\" parameter: '
+        warn('Invalid "dynamic_epochs" parameter: '
              'expected a function with either one or two arguments, but got %s' % args_spec)
 
     if self._epochs != new_epochs:
       self._epochs = new_epochs or self._epochs
       debug('Update epochs=%d' % new_epochs)
 
-  def _evaluate_validation(self, batch_x, batch_y):
-    if (self._train_set.step % self._eval_train_every == 0) and is_info_logged():
+  def _evaluate_train(self, batch_x, batch_y):
+    eval_this_step = self._train_set.step % self._eval_train_every == 0
+    if eval_this_step and is_info_logged():
       eval_ = self._runner.evaluate(batch_x, batch_y)
-      self._log_iteration('train_accuracy', eval_.get('loss', 0), eval_.get('accuracy', 0), False)
+      self._log_iteration('train_accuracy', eval_.get('loss'), eval_.get('accuracy'), False)
 
-    if (self._train_set.step % self._eval_validation_every == 0) or \
-        (self._train_set.just_completed and self._eval_flexible):
-      eval_ = self._evaluate(batch_x=self._val_set.x, batch_y=self._val_set.y)
-      self._log_iteration('validation_accuracy', eval_.get('loss', 0), eval_.get('accuracy', 0), True)
+  def _evaluate_validation(self):
+    eval_this_step = self._train_set.step % self._eval_validation_every == 0
+    epoch_just_completed = (self._train_set.just_completed and self._eval_flexible)
+
+    if eval_this_step or epoch_just_completed:
+      if self._val_set is None:
+        warn('Validation set is not provided. Skip val evaluation')
+        return
+
+      eval_ = self._evaluate(self._val_set)
+      self._log_iteration('validation_accuracy', eval_.get('loss'), eval_.get('accuracy'), True)
       return eval_
 
   def _evaluate_test(self):
-    eval_ = self._evaluate(batch_x=self._test_set.x, batch_y=self._test_set.y)
-    info('Final test_accuracy=%.4f' % eval_.get('accuracy', 0))
+    if not self._eval_test:
+      return
+
+    if self._test_set is None:
+      warn('Test set is not provided. Skip test evaluation')
+      return
+
+    eval_ = self._evaluate(self._test_set)
+    test_accuracy = eval_.get('accuracy')
+    if test_accuracy is None:
+      warn('Test accuracy evaluation is not available')
+      return
+
+    info('Final test_accuracy=%.4f' % test_accuracy)
     return eval_
 
   def _log_iteration(self, name, loss, accuracy, mark_best):
-    marker = ' *' if mark_best and (accuracy > self._max_val_accuracy) else ''
-    info('Epoch %2d, iteration %7d: loss=%.6f, %s=%.4f%s' %
-         (self._train_set.epochs_completed, self._train_set.index, loss, name, accuracy, marker))
+    message = 'Epoch %2d, iteration %7d' % (self._train_set.epochs_completed, self._train_set.index)
+    if accuracy is not None:
+      marker = ' *' if mark_best and (accuracy > self._max_val_accuracy) else ''
+      if loss is None:
+        info('%s: %s=%.4f%s' % (message, name, accuracy, marker))
+      else:
+        info('%s: loss=%.6f, %s=%.4f%s' % (message, loss, name, accuracy, marker))
+    else:
+      if loss is not None:
+        info('%s: loss=%.6f' % (message, loss))
+      else:
+        info('%s: -- no loss or accuracy defined --' % message)
 
-  def _evaluate(self, batch_x, batch_y):
-    size = len(batch_x)
-    assert len(batch_y) == size
-
-    if size <= self._eval_batch_size:
-      return self._runner.evaluate(batch_x, batch_y)
+  def _evaluate(self, data_set):
+    assert isinstance(data_set, IterableDataProvider), 'Currently can evaluate only IterableDataProviders'
+    size = data_set.size
+    data_set.reset_counters()
 
     result = {'accuracy': 0, 'loss': 0, 'misclassified_x': [], 'misclassified_y': []}
-    for start, end in mini_batch(size, self._eval_batch_size):
-      eval = self._runner.evaluate(batch_x=batch_x[start:end], batch_y=batch_y[start:end])
-      result['accuracy'] += eval.get('accuracy', 0) * len(batch_x[start:end])
-      result['loss'] += eval.get('loss', 0) * len(batch_x[start:end])
-      result['misclassified_x'].append(eval.get('misclassified_x'))
-      result['misclassified_y'].append(eval.get('misclassified_y'))
+    while data_set.epochs_completed < 1:
+      batch_x, batch_y = data_set.next_batch(self._eval_batch_size)
+      eval_ = self._runner.evaluate(batch_x=batch_x, batch_y=batch_y)
+      result['accuracy'] += eval_ .get('accuracy', 0) * len(batch_x)
+      result['loss'] += eval_ .get('loss', 0) * len(batch_x)
+      result['misclassified_x'].append(eval_ .get('misclassified_x'))
+      result['misclassified_y'].append(eval_ .get('misclassified_y'))
     result['accuracy'] /= size
     result['loss'] /= size
     result['misclassified_x'] = safe_concat(result['misclassified_x'])

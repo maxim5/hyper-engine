@@ -5,52 +5,128 @@ __author__ = 'maxim'
 
 import numpy as np
 
-class DataSet(object):
+
+class DataProvider(object):
+  pass
+
+
+class IterableDataProvider(DataProvider):
+  def __init__(self):
+    super(IterableDataProvider, self).__init__()
+    self._size = 0
+    self._step = 0
+    self._epochs_completed = 0
+    self._index_in_epoch = 0
+    self._just_completed = False
+
+  @property
+  def size(self):
+    """
+    Data size (number of rows)
+    """
+    return self._size
+
+  @property
+  def step(self):
+    """
+    The number of batches processed
+    """
+    return self._step
+
+  @property
+  def index(self):
+    """
+    Total index of input rows (over all epochs)
+    """
+    return self._epochs_completed * self._size + self._index_in_epoch
+
+  @property
+  def index_in_epoch(self):
+    """
+    The index of input rows in a current epoch
+    """
+    return self._index_in_epoch
+
+  @property
+  def epochs_completed(self):
+    """
+    A number of completed epochs
+    """
+    return self._epochs_completed
+
+  @property
+  def just_completed(self):
+    """
+    Whether the previous epoch was just completed
+    """
+    return self._just_completed
+
+  def reset_counters(self):
+    """
+    Resets all counters.
+    """
+    self._step = 0
+    self._epochs_completed = 0
+    self._index_in_epoch = 0
+    self._just_completed = False
+
+  def next_batch(self, batch_size):
+    """
+    Returns the next `batch_size` examples from this data set.
+    """
+    raise NotImplementedError
+
+  def _inc_index(self):
+    index = self._index_in_epoch + 1
+    if index >= self._size:
+      self._index_in_epoch = 0
+      self._epochs_completed += 1
+      self._just_completed = True
+    else:
+      self._index_in_epoch = index
+      self._just_completed = False
+
+
+class DataSet(IterableDataProvider):
   """
-  A labeled data set. Both examples and labels are stored as numpy arrays.
+  A labeled data set. Both inputs and labels are stored as numpy arrays in memory.
   """
 
   def __init__(self, x, y):
+    super(DataSet, self).__init__()
+
     x = np.array(x)
     y = np.array(y)
     assert x.shape[0] == y.shape[0]
 
-    self.size = x.shape[0]
-    self.x = x
-    self.y = y
-    self.step = 0
-    self.epochs_completed = 0
-    self.index_in_epoch = 0
-    self.just_completed = False
+    self._size = x.shape[0]
+    self._x = x
+    self._y = y
 
   @property
-  def index(self):
-    return self.epochs_completed * self.size + self.index_in_epoch
+  def x(self):
+    return self._x
 
-  def reset_counters(self):
-    self.step = 0
-    self.epochs_completed = 0
-    self.index_in_epoch = 0
+  @property
+  def y(self):
+    return self._y
 
   def next_batch(self, batch_size):
-    """
-    Return the next `batch_size` examples from this data set.
-    """
-    if self.just_completed:
-      permutation = np.arange(self.size)
+    if self._just_completed:
+      permutation = np.arange(self._size)
       np.random.shuffle(permutation)
-      self.x = self.x[permutation]
-      self.y = self.y[permutation]
+      self._x = self._x[permutation]
+      self._y = self._y[permutation]
 
-    self.step += 1
-    start = self.index_in_epoch
-    self.index_in_epoch += batch_size
-    end = min(self.index_in_epoch, self.size)
-    if self.index_in_epoch >= self.size:
-      self.index_in_epoch = 0
-    self.just_completed = end == self.size
-    self.epochs_completed += int(self.just_completed)
-    return self.x[start:end], self.y[start:end]
+    self._step += 1
+    start = self._index_in_epoch
+    self._index_in_epoch += batch_size
+    end = min(self._index_in_epoch, self._size)
+    if self._index_in_epoch >= self._size:
+      self._index_in_epoch = 0
+    self._just_completed = end == self._size
+    self._epochs_completed += int(self._just_completed)
+    return self._x[start:end], self._y[start:end]
 
 
 def merge_data_sets(ds1, ds2):
@@ -65,15 +141,17 @@ class Data(object):
   """
 
   def __init__(self, train, validation, test):
+    assert train is not None, 'Training set must be not None'
+    assert train is not validation, 'Validation set can not coincide with the training set'
+    assert train is not test, 'Test set can not coincide with the training set'
+
     self.train = train
     self.validation = validation
     self.test = test
 
   def reset_counters(self):
     self.train.reset_counters()
-    self.validation.reset_counters()
-    self.test.reset_counters()
-
-  def merge_validation_to_train(self):
-    self.train = merge_data_sets(self.train, self.validation)
-    self.validation = self.test
+    if self.validation:
+      self.validation.reset_counters()
+    if self.test:
+      self.test.reset_counters()
