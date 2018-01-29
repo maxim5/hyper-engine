@@ -104,7 +104,7 @@ class BaseSolver(object):
       elif args == 2:
         new_epochs = self._dynamic_epochs(curve)
       else:
-        warn('Invalid \"dynamic_epochs\" parameter: '
+        warn('Invalid "dynamic_epochs" parameter: '
              'expected a function with either one or two arguments, but got %s' % args_spec)
 
     if self._epochs != new_epochs:
@@ -115,7 +115,7 @@ class BaseSolver(object):
     eval_this_step = self._train_set.step % self._eval_train_every == 0
     if eval_this_step and is_info_logged():
       eval_ = self._runner.evaluate(batch_x, batch_y)
-      self._log_iteration('train_accuracy', eval_.get('loss', 0), eval_.get('accuracy', 0), False)
+      self._log_iteration('train_accuracy', eval_.get('loss'), eval_.get('accuracy'), False)
 
   def _evaluate_validation(self):
     eval_this_step = self._train_set.step % self._eval_validation_every == 0
@@ -127,7 +127,7 @@ class BaseSolver(object):
         return
 
       eval_ = self._evaluate(batch_x=self._val_set.x, batch_y=self._val_set.y)
-      self._log_iteration('validation_accuracy', eval_.get('loss', 0), eval_.get('accuracy', 0), True)
+      self._log_iteration('validation_accuracy', eval_.get('loss'), eval_.get('accuracy'), True)
       return eval_
 
   def _evaluate_test(self):
@@ -139,13 +139,27 @@ class BaseSolver(object):
       return
 
     eval_ = self._evaluate(batch_x=self._test_set.x, batch_y=self._test_set.y)
-    info('Final test_accuracy=%.4f' % eval_.get('accuracy', 0))
+    test_accuracy = eval_.get('accuracy')
+    if test_accuracy is None:
+      warn('Test accuracy evaluation is not available')
+      return
+
+    info('Final test_accuracy=%.4f' % test_accuracy)
     return eval_
 
   def _log_iteration(self, name, loss, accuracy, mark_best):
-    marker = ' *' if mark_best and (accuracy > self._max_val_accuracy) else ''
-    info('Epoch %2d, iteration %7d: loss=%.6f, %s=%.4f%s' %
-         (self._train_set.epochs_completed, self._train_set.index, loss, name, accuracy, marker))
+    message = 'Epoch %2d, iteration %7d' % (self._train_set.epochs_completed, self._train_set.index)
+    if accuracy is not None:
+      marker = ' *' if mark_best and (accuracy > self._max_val_accuracy) else ''
+      if loss is None:
+        info('%s: %s=%.4f%s' % (message, name, accuracy, marker))
+      else:
+        info('%s: loss=%.6f, %s=%.4f%s' % (message, loss, name, accuracy, marker))
+    else:
+      if loss is not None:
+        info('%s: loss=%.6f' % (message, loss))
+      else:
+        info('%s: -- no loss or accuracy defined --' % message)
 
   def _evaluate(self, batch_x, batch_y):
     size = len(batch_x)
