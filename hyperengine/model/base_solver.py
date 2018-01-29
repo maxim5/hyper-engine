@@ -8,7 +8,7 @@ import numpy as np
 from ..base import *
 from .data_set import IterableDataProvider
 
-metrics = {
+reducers = {
   'max': lambda curve: np.max(curve) if curve else 0,
   'avg': lambda curve: np.mean(curve) if curve else 0,
 }
@@ -26,7 +26,7 @@ class BaseSolver(object):
     self._augmentation = augmentation
     self._runner = runner
     self._hyper_params = hyper_params
-    self._reducer = as_numeric_function(reducer, presets=metrics)
+    self._reducer = as_numeric_function(reducer, presets=reducers)
     self._max_val_accuracy = 0
     self._val_accuracy_curve = []
 

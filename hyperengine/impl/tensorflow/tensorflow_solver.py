@@ -5,6 +5,7 @@ __author__ = 'maxim'
 
 import tensorflow as tf
 
+from ...base import *
 from hyperengine.model import BaseSolver
 from tensorflow_model_io import TensorflowModelIO
 from tensorflow_runner import TensorflowRunner
@@ -45,6 +46,13 @@ class TensorflowSolver(BaseSolver):
       self._model_io.save_data(eval_result.get('data'))
 
   def _evaluate_test(self):
+    if not self._eval_test:
+      return
+
+    if self._test_set is None:
+      warn('Test set is not provided. Skip test evaluation')
+      return
+
     # Load the best session if available before test evaluation
     current_results = self._load(directory=self._model_io.save_dir, log_level=0)
     eval_ = super(TensorflowSolver, self)._evaluate_test()
