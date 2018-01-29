@@ -18,7 +18,7 @@ class BaseSolver(object):
   Implements a training algorithm.
   """
 
-  def __init__(self, runner, data, hyper_params, augmentation=None, result_metric='max', **params):
+  def __init__(self, runner, data, hyper_params, augmentation=None, reducer='max', **params):
     data.reset_counters()
     self._train_set = data.train
     self._val_set = data.validation
@@ -26,7 +26,7 @@ class BaseSolver(object):
     self._augmentation = augmentation
     self._runner = runner
     self._hyper_params = hyper_params
-    self._result_metric = as_numeric_function(result_metric, presets=metrics)
+    self._reducer = as_numeric_function(reducer, presets=metrics)
     self._max_val_accuracy = 0
     self._val_accuracy_curve = []
 
@@ -68,7 +68,7 @@ class BaseSolver(object):
             break
 
       self._evaluate_test()
-    return self._result_metric(self._val_accuracy_curve)
+    return self._reducer(self._val_accuracy_curve)
 
   def create_session(self):
     return None

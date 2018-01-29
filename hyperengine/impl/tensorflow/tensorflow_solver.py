@@ -12,7 +12,7 @@ from tf_util import is_gpu_available
 
 
 class TensorflowSolver(BaseSolver):
-  def __init__(self, data, model=None, hyper_params=None, augmentation=None, model_io=None, result_metric='max', **params):
+  def __init__(self, data, model=None, hyper_params=None, augmentation=None, model_io=None, reducer='max', **params):
     if isinstance(model, TensorflowRunner):
       runner = model
     else:
@@ -23,7 +23,7 @@ class TensorflowSolver(BaseSolver):
     self._save_accuracy_limit = params.get('save_accuracy_limit', 0)
 
     params['eval_flexible'] = params.get('eval_flexible', True) and is_gpu_available()
-    super(TensorflowSolver, self).__init__(runner, data, hyper_params, augmentation, result_metric, **params)
+    super(TensorflowSolver, self).__init__(runner, data, hyper_params, augmentation, reducer, **params)
 
   def create_session(self):
     self._session = tf.Session(graph=self._runner.graph())
