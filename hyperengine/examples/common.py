@@ -117,6 +117,7 @@ def get_text8(path='temp-text8/data', url='http://mattmahoney.net/dc/text8.zip')
 ########################################################################################################################
 
 
+# See https://archive.ics.uci.edu/ml/datasets/SMS+Spam+Collection
 def get_sms_spam_raw(path='temp-sms-spam/data',
                      url='http://archive.ics.uci.edu/ml/machine-learning-databases/00228/smsspamcollection.zip'):
   zip_path = hype.util.download_if_needed(url, path)
@@ -139,3 +140,44 @@ def get_sms_spam_data(path='temp-sms-spam/data'):
   [labels, inputs] = [list(line) for line in zip(*data)]
   inputs = [clean_text(line) for line in inputs]
   return inputs, labels
+
+
+########################################################################################################################
+# Wine quality set
+########################################################################################################################
+
+
+# See https://archive.ics.uci.edu/ml/datasets/Wine+Quality
+def get_wine_data(path='temp-wine/data',
+                  urls=('https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv',
+                        'https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-white.csv'),
+                  val_ratio=0.8,
+                  test_ratio=0.9):
+  full_data = None
+  for url in urls:
+    result_path = hype.util.download_if_needed(url, path)
+    data = np.genfromtxt(result_path, delimiter=';', skip_header=True)
+    if full_data is None:
+      full_data = data
+    else:
+      full_data = np.vstack([full_data, data])
+
+  total_rows = full_data.shape[0]
+  val_split = int(total_rows * val_ratio) if val_ratio is not None else None
+  test_split = int(total_rows * test_ratio) if test_ratio is not None else None
+
+  np.random.shuffle(full_data)
+  x_train, y_train = full_data[:val_split,:-1], full_data[:val_split,-1]
+  x_val, y_val = full_data[val_split:test_split,:-1], full_data[val_split:test_split,-1]
+  x_test, y_test = full_data[test_split:,:-1], full_data[test_split:,-1]
+
+  if val_ratio is None and test_ratio is None:
+    return x_train, y_train
+
+  if val_ratio is None:
+    return x_train, y_train, x_test, y_test
+
+  if test_ratio is None:
+    return x_train, y_train, x_val, y_val
+
+  return x_train, y_train, x_test, y_test, x_val, y_val

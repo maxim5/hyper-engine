@@ -3,6 +3,7 @@
 
 __author__ = 'maxim'
 
+import numpy as np
 import time
 
 from ..base import *
@@ -42,7 +43,7 @@ class HyperTuner(object):
 
       accuracy = solver.train()
 
-      previous_max = max(self.strategy.values) if len(self.strategy.values) > 0 else 0
+      previous_max = np.max(self.strategy.values) if len(self.strategy.values) > 0 else -np.inf
       self.strategy.add_point(point, accuracy)
       index = len(self.strategy.values)
 

@@ -5,6 +5,7 @@ __author__ = 'maxim'
 
 import tensorflow as tf
 
+from ...base import *
 from hyperengine.model import BaseSolver
 from tensorflow_model_io import TensorflowModelIO
 from tensorflow_runner import TensorflowRunner
@@ -12,7 +13,7 @@ from tf_util import is_gpu_available
 
 
 class TensorflowSolver(BaseSolver):
-  def __init__(self, data, model=None, hyper_params=None, augmentation=None, model_io=None, result_metric='max', **params):
+  def __init__(self, data, model=None, hyper_params=None, augmentation=None, model_io=None, reducer='max', **params):
     if isinstance(model, TensorflowRunner):
       runner = model
     else:
@@ -23,7 +24,7 @@ class TensorflowSolver(BaseSolver):
     self._save_accuracy_limit = params.get('save_accuracy_limit', 0)
 
     params['eval_flexible'] = params.get('eval_flexible', True) and is_gpu_available()
-    super(TensorflowSolver, self).__init__(runner, data, hyper_params, augmentation, result_metric, **params)
+    super(TensorflowSolver, self).__init__(runner, data, hyper_params, augmentation, reducer, **params)
 
   def create_session(self):
     self._session = tf.Session(graph=self._runner.graph())
@@ -45,6 +46,13 @@ class TensorflowSolver(BaseSolver):
       self._model_io.save_data(eval_result.get('data'))
 
   def _evaluate_test(self):
+    if not self._eval_test:
+      return
+
+    if self._test_set is None:
+      warn('Test set is not provided. Skip test evaluation')
+      return
+
     # Load the best session if available before test evaluation
     current_results = self._load(directory=self._model_io.save_dir, log_level=0)
     eval_ = super(TensorflowSolver, self)._evaluate_test()

@@ -15,6 +15,8 @@ All examples are complete runnable scripts and are self-contained to ease unders
  training the selected model further to squeeze the highest possible accuracy out of it.
  - [**Learning curve prediction**](1_5_learning_curve_prediction.py):
  optimizing the process with the learning curve prediction.
+ - [**Regression problem**](1_6_optimizing_regression.py): Hyper-Engine is designed for classification problems,
+ but with some tricks can be applied in regression settings as well.
 
 #### 2. Convolutional Neural Networks
  - [**Exploring CNN architectures to beat MNIST record**](2_1_cnn_mnist.py):

@@ -3,13 +3,14 @@
 __author__ = 'maxim'
 
 import inspect
+import numpy as np
 
 from ..base import *
 from .data_set import IterableDataProvider
 
-metrics = {
-  'max': lambda curve: max(curve) if curve else 0,
-  'avg': lambda curve: sum(curve) / len(curve) if curve else 0,
+reducers = {
+  'max': lambda curve: np.max(curve) if curve else 0,
+  'avg': lambda curve: np.mean(curve) if curve else 0,
 }
 
 class BaseSolver(object):
@@ -17,7 +18,7 @@ class BaseSolver(object):
   Implements a training algorithm.
   """
 
-  def __init__(self, runner, data, hyper_params, augmentation=None, result_metric='max', **params):
+  def __init__(self, runner, data, hyper_params, augmentation=None, reducer='max', **params):
     data.reset_counters()
     self._train_set = data.train
     self._val_set = data.validation
@@ -25,7 +26,7 @@ class BaseSolver(object):
     self._augmentation = augmentation
     self._runner = runner
     self._hyper_params = hyper_params
-    self._result_metric = as_numeric_function(result_metric, presets=metrics)
+    self._reducer = as_numeric_function(reducer, presets=reducers)
     self._max_val_accuracy = 0
     self._val_accuracy_curve = []
 
@@ -67,7 +68,7 @@ class BaseSolver(object):
             break
 
       self._evaluate_test()
-    return self._result_metric(self._val_accuracy_curve)
+    return self._reducer(self._val_accuracy_curve)
 
   def create_session(self):
     return None
@@ -163,20 +164,17 @@ class BaseSolver(object):
 
   def _evaluate(self, data_set):
     assert isinstance(data_set, IterableDataProvider), 'Currently can evaluate only IterableDataProviders'
-    size = data_set.size
-    data_set.reset_counters()
 
-    result = {'accuracy': 0, 'loss': 0, 'misclassified_x': [], 'misclassified_y': []}
+    data_set.reset_counters()
+    result_acc = None
+    result_loss = None
     while data_set.epochs_completed < 1:
       batch_x, batch_y = data_set.next_batch(self._eval_batch_size)
       eval_ = self._runner.evaluate(batch_x=batch_x, batch_y=batch_y)
-      result['accuracy'] += eval_ .get('accuracy', 0) * len(batch_x)
-      result['loss'] += eval_ .get('loss', 0) * len(batch_x)
-      result['misclassified_x'].append(eval_ .get('misclassified_x'))
-      result['misclassified_y'].append(eval_ .get('misclassified_y'))
-    result['accuracy'] /= size
-    result['loss'] /= size
-    result['misclassified_x'] = safe_concat(result['misclassified_x'])
-    result['misclassified_y'] = safe_concat(result['misclassified_y'])
+      result_acc = (result_acc or 0) + eval_ ['accuracy'] * len(batch_x) if 'accuracy' in eval_ else None
+      result_loss = (result_loss or 0) + eval_['loss'] * len(batch_x) if 'loss' in eval_ else None
 
-    return result
+    return {
+      'accuracy': result_acc / data_set.size if result_acc is not None else None,
+      'loss': result_loss / data_set.size if result_loss is not None else None,
+    }
