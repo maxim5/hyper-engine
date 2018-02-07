@@ -6,10 +6,11 @@ __author__ = 'maxim'
 
 import copy
 import numbers
+from six import iteritems
 
 import numpy as np
 
-from nodes import BaseNode, AcceptsInputNode, JointNode
+from .nodes import BaseNode, AcceptsInputNode, JointNode
 
 
 class ParsedSpec(object):
@@ -27,7 +28,7 @@ class ParsedSpec(object):
 
   def instantiate(self, points):
     assert len(points) == self.size()
-    for node, index in self._input_nodes.iteritems():
+    for node, index in iteritems(self._input_nodes):
       node.set_point(points[index])
 
     spec_copy = copy.deepcopy(self._spec)
@@ -35,7 +36,7 @@ class ParsedSpec(object):
     return spec_copy
 
   def get_names(self):
-    return {index: node.name() for node, index in self._input_nodes.iteritems()}
+    return {index: node.name() for node, index in iteritems(self._input_nodes)}
 
   def _traverse_nodes(self, spec):
     self._visited = set()
@@ -71,7 +72,7 @@ class ParsedSpec(object):
       return
 
     if isinstance(spec, dict):
-      for key, value in spec.iteritems():
+      for key, value in iteritems(spec):
         self._traverse_nodes_recursive(value, key, *path)
       return
 
@@ -81,7 +82,7 @@ class ParsedSpec(object):
       return
 
     if isinstance(spec, object) and hasattr(spec, '__dict__'):
-      for key, value in spec.__dict__.iteritems():
+      for key, value in iteritems(spec.__dict__):
         if not (key.startswith('__') and key.endswith('__')):
           self._traverse_nodes_recursive(value, key, *path)
       return
@@ -111,7 +112,7 @@ class ParsedSpec(object):
       return spec_copy
 
     if isinstance(spec_copy, dict):
-      for key, value in spec_copy.iteritems():
+      for key, value in iteritems(spec_copy):
         spec_copy[key] = self._traverse_and_replace_recursive(spec_copy[key])
       return spec_copy
 
@@ -122,7 +123,7 @@ class ParsedSpec(object):
       return replaced
 
     if isinstance(spec_copy, object) and hasattr(spec_copy, '__dict__'):
-      for key, value in spec_copy.__dict__.iteritems():
+      for key, value in iteritems(spec_copy.__dict__):
         if not(key.startswith('__') and key.endswith('__')):
           setattr(spec_copy, key, self._traverse_and_replace_recursive(value))
       return spec_copy

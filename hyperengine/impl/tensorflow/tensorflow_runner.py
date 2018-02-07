@@ -7,8 +7,8 @@ __author__ = 'maxim'
 import tensorflow as tf
 
 from ...base import *
-from hyperengine.model.base_runner import BaseRunner
-from tf_util import graph_vars, get_total_dim
+from ...model.base_runner import BaseRunner
+from .tf_util import graph_vars, get_total_dim
 
 
 class TensorflowRunner(BaseRunner):
