@@ -4,7 +4,7 @@
 __author__ = 'maxim'
 
 import numpy as np
-
+from six.moves import xrange
 
 class BaseSampler(object):
   """
