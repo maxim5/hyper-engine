@@ -29,7 +29,7 @@ Installation
 
 .. code-block:: shell
 
-    pip install git+https://github.com/maxim5/hyper-engine.git@master 
+    pip install hyperengine
 
 Dependencies:
 
