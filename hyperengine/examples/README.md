@@ -5,7 +5,7 @@ All examples are complete runnable scripts and are self-contained to ease unders
 
 #### 1. Getting Started
  - [**Hello World**](1_1_hello_word_with_mnist.py):
- a very simple example to run your existing model in Hyper-Engine environment.
+ a very simple example to run your existing model in HyperEngine environment.
  - [**Getting started with tuning**](1_2_getting_started_with_tuning.py):
  tuning a single parameter (`learning_rate`) to find the best value for
  a simple CNN.
@@ -15,7 +15,7 @@ All examples are complete runnable scripts and are self-contained to ease unders
  training the selected model further to squeeze the highest possible accuracy out of it.
  - [**Learning curve prediction**](1_5_learning_curve_prediction.py):
  optimizing the process with the learning curve prediction.
- - [**Regression problem**](1_6_optimizing_regression.py): Hyper-Engine is designed for classification problems,
+ - [**Regression problem**](1_6_optimizing_regression.py): HyperEngine is designed for classification problems,
  but with some tricks can be applied in regression settings as well.
 
 #### 2. Convolutional Neural Networks

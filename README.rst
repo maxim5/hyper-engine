@@ -19,9 +19,9 @@ Overview
 About
 =====
 
-*Hyper-Engine* is a toolbox for `model selection and hyper-parameters tuning <https://en.wikipedia.org/wiki/Hyperparameter_optimization>`__.
+*HyperEngine* is a toolbox for `model selection and hyper-parameters tuning <https://en.wikipedia.org/wiki/Hyperparameter_optimization>`__.
 It aims to provide most state-of-the-art techniques via intuitive API and with minimum dependencies.
-*Hyper-Engine* is **not a framework**, which means it doesn't enforce any structure or design to the main code,
+*HyperEngine* is **not a framework**, which means it doesn't enforce any structure or design to the main code,
 thus making integration local and non-intrusive.
 
 Installation
@@ -48,12 +48,12 @@ License:
 
 - `Apache 2.0 <LICENSE>`__
 
-*Hyper-Engine* is designed to be ML-platform agnostic, but currently provides only simple `TensorFlow <https://github.com/tensorflow/tensorflow>`__ binding.
+*HyperEngine* is designed to be ML-platform agnostic, but currently provides only simple `TensorFlow <https://github.com/tensorflow/tensorflow>`__ binding.
 
 How to use
 ==========
 
-Adapting your code to *Hyper-Engine* usually boils down to migrating hard-coded hyper-parameters to a dictionary (or an object)
+Adapting your code to *HyperEngine* usually boils down to migrating hard-coded hyper-parameters to a dictionary (or an object)
 and giving names to particular tensors.
 
 **Before:**
@@ -132,7 +132,7 @@ Exploration-exploitation trade-off
 Machine learning model selection is expensive.
 Each model evaluation requires full training from scratch and may take minutes to hours to days, 
 depending on the problem complexity and available computational resources.
-*Hyper-Engine* provides the algorithm to explore the space of parameters efficiently, focus on the most promising areas,
+*HyperEngine* provides the algorithm to explore the space of parameters efficiently, focus on the most promising areas,
 thus converge to the maximum as fast as possible.
 
 **Example 1**: the true function is 1-dimensional, ``f(x) = x * sin(x)`` (black curve) on [-10, 10] interval.
@@ -164,7 +164,7 @@ The code for these and others examples is `here <https://github.com/maxim5/hyper
 Learning Curve Estimation
 =========================
 
-*Hyper-Engine* can monitor the model performance during the training and stop early if it's learning too slowly.
+*HyperEngine* can monitor the model performance during the training and stop early if it's learning too slowly.
 This is done via *learning curve prediction*. Note that this technique is compatible with Bayesian Optimization, since
 it estimates the model accuracy after full training - this value can be safely used to update Gaussian Process parameters.
 
