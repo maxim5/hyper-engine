@@ -3,6 +3,7 @@
 
 __author__ = 'maxim'
 
+import six
 import unittest
 
 from hyperengine.spec import *
@@ -304,9 +305,12 @@ class SpecTest(unittest.TestCase):
     choice_node = choice([uniform(), uniform(), uniform()])
     spec = {'a': {'b': {'c': { 'd': norm_node, 0: choice_node } } } }
 
+    # stats.norm.ppf is an instance method in python 2
+    expected_normal_name = 'norm_gen' if six.PY2 else 'ppf'
+
     parsed = ParsedSpec(spec)
     self.assertEqual(parsed.size(), 5)
-    self.assertTrue('a-b-c-d' in norm_node.name())
-    self.assertTrue('norm_gen' in norm_node.name())
-    self.assertTrue('a-b-c-0' in choice_node.name())
-    self.assertTrue('choice' in choice_node.name())
+    self.assertTrue('a-b-c-d' in norm_node.name(), 'name=%s' % norm_node.name())
+    self.assertTrue(expected_normal_name in norm_node.name(), 'name=%s' % norm_node.name())
+    self.assertTrue('a-b-c-0' in choice_node.name(), 'name=%s' % choice_node.name())
+    self.assertTrue('choice' in choice_node.name(), 'name=%s' % choice_node.name())

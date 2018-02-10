@@ -128,7 +128,7 @@ class LinearCurvePredictorTest(unittest.TestCase):
     test_y = np.array([item[1] for item in test])
 
     total_error = 0
-    for i in xrange(test_x.shape[0]):
+    for i in range(test_x.shape[0]):
       x = test_x[i]
       y = test_y[i]
 
@@ -157,7 +157,7 @@ class LinearCurvePredictorTest(unittest.TestCase):
     test_x = data['x'][train_size:train_size+test_size]
     test_y = data['y'][train_size:train_size+test_size]
 
-    return zip(x, y), zip(test_x, test_y)
+    return list(zip(x, y)), list(zip(test_x, test_y))
 
 
 if __name__ == '__main__':
