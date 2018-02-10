@@ -33,14 +33,15 @@ Installation
 
 Dependencies:
 
--  NumPy
--  SciPy
+-  Six, NumPy, SciPy
 -  TensorFlow (optional)
--  PyPlot (optional, only if you're using development version)
+-  PyPlot (optional, only for development)
 
 Compatibility:
 
--  Python 2.7 and 3.5
+[![Build Status](https://travis-ci.org/maxim5/hyper-engine.svg?branch=master)](https://travis-ci.org/maxim5/hyper-engine)
+
+-  Python 2.7, 3.5, 3.6
 
 License:
 
