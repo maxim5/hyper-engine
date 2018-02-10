@@ -39,7 +39,8 @@ Dependencies:
 
 Compatibility:
 
-[![Build Status](https://travis-ci.org/maxim5/hyper-engine.svg?branch=master)](https://travis-ci.org/maxim5/hyper-engine)
+.. image:: https://travis-ci.org/maxim5/hyper-engine.svg?branch=master
+    :target: https://travis-ci.org/maxim5/hyper-engine
 
 -  Python 2.7, 3.5, 3.6
 
