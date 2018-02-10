@@ -1,0 +1,15 @@
+language: python
+python:
+  - "2.7"
+  - "3.5"
+  - "3.6"
+
+install:
+  - pip install six==1.11.0 numpy==1.14.0 scipy==1.0.0 tensorflow==1.5.0
+
+script:
+  - cd hyperengine/tests
+  - python -m pytest curve_predictor_test.py data_set_test.py named_dict_test.py spec_test.py
+
+notifications:
+  email: false

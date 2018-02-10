@@ -7,9 +7,9 @@ import numpy as np
 
 from ..base import *
 
-from kernel import RadialBasisFunction
-from maximizer import MonteCarloUtilityMaximizer
-from utility import ProbabilityOfImprovement, ExpectedImprovement, UpperConfidenceBound, RandomPoint
+from .kernel import RadialBasisFunction
+from .maximizer import MonteCarloUtilityMaximizer
+from .utility import ProbabilityOfImprovement, ExpectedImprovement, UpperConfidenceBound, RandomPoint
 
 
 mu_priors = {

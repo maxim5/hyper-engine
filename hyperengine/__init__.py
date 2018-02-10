@@ -6,5 +6,5 @@ from .bayesian import *
 from .model import *
 from .impl.tensorflow import *
 
-import base as util
-import spec
+from . import base as util
+from . import spec

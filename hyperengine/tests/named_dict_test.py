@@ -4,6 +4,7 @@
 __author__ = 'maxim'
 
 
+import six
 import unittest
 
 import numpy as np
@@ -25,7 +26,7 @@ class NamedDictTest(unittest.TestCase):
 
     instance = self._instantiate(spec)
     self.assertEqual(repr(instance), "{'foo': {'bar': {'baz': 999}, 'baz': []}}")
-    self.assertItemsEqual(instance.foo.keys(), ['bar', 'baz'])
+    six.assertCountEqual(self, instance.foo.keys(), ['bar', 'baz'])
 
     self.assertTrue('foo' in instance)
     self.assertTrue('bar' in instance.foo)
@@ -82,7 +83,7 @@ class NamedDictTest(unittest.TestCase):
     instance = self._instantiate(hyper_params_spec)
     self.assertEqual(repr(instance),
                      "{'conv': {'filters': [20, 64], 'residual': 0}, 'dropout': 0.500000, 'learning_rate': 0.001000}")
-    self.assertItemsEqual(instance.keys(), ['learning_rate', 'conv', 'dropout'])
+    six.assertCountEqual(self, instance.keys(), ['learning_rate', 'conv', 'dropout'])
 
     self.assertEqual(type(instance), NamedDict)
     self.assertEqual(type(instance.conv), NamedDict)
@@ -95,7 +96,7 @@ class NamedDictTest(unittest.TestCase):
     self.assertEqual(instance.get('foo'), None)
     self.assertEqual(instance.get('foo', 'bar'), 'bar')
 
-    self.assertItemsEqual(instance.conv.keys(), ['filters', 'residual'])
+    six.assertCountEqual(self, instance.conv.keys(), ['filters', 'residual'])
     self.assertEqual(instance.conv.filters, [20, 64])
     self.assertEqual(instance.conv.filters[0], 20)
     self.assertEqual(instance.conv.filters[1], 64)

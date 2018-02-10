@@ -43,6 +43,9 @@ class BaseNode(object):
   def __floordiv__(self, other):  return _op2(self, other, operator.floordiv)
   def __rfloordiv__(self, other): return _op2(self, other, operator.floordiv, rev=True)
 
+  def __truediv__(self, other):  return _op2(self, other, operator.truediv)
+  def __rtruediv__(self, other): return _op2(self, other, operator.truediv, rev=True)
+
   def __pow__(self, other):  return _op2(self, other, operator.pow)
   def __rpow__(self, other): return _op2(self, other, operator.pow, rev=True)
 

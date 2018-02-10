@@ -10,6 +10,8 @@ import os
 import random
 import string
 import sys
+
+from six import iteritems
 from six.moves import urllib
 
 import numpy as np
@@ -30,11 +32,11 @@ def str_to_dict(s):
 def zip_longest(list1, list2):
   len1 = len(list1)
   len2 = len(list2)
-  for i in xrange(max(len1, len2)):
+  for i in range(max(len1, len2)):
     yield (list1[i % len1], list2[i % len2])
 
 def deep_update(dict_, upd):
-  for key, value in upd.iteritems():
+  for key, value in iteritems(upd):
     if isinstance(value, collections.Mapping):
       recursive = deep_update(dict_.get(key, {}), value)
       dict_[key] = recursive
@@ -47,7 +49,7 @@ def mini_batch(total, size):
              range(size, total + size, size))
 
 def random_id(size=6, chars=string.ascii_uppercase + string.digits):
-  return ''.join(random.choice(chars) for _ in xrange(size))
+  return ''.join(random.choice(chars) for _ in range(size))
 
 def safe_concat(list_):
   list_ = [i for i in list_ if i is not None]
@@ -66,7 +68,7 @@ def call(obj, *args):
     return apply(*args)
 
 def slice_dict(d, key_prefix):
-  return {key[len(key_prefix):]: value for key, value in d.iteritems() if key.startswith(key_prefix)}
+  return {key[len(key_prefix):]: value for key, value in iteritems(d) if key.startswith(key_prefix)}
 
 def as_function(val, presets, default=None):
   if callable(val):

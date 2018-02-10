@@ -6,10 +6,10 @@ __author__ = 'maxim'
 import tensorflow as tf
 
 from ...base import *
-from hyperengine.model import BaseSolver
-from tensorflow_model_io import TensorflowModelIO
-from tensorflow_runner import TensorflowRunner
-from tf_util import is_gpu_available
+from ...model import BaseSolver
+from .tensorflow_model_io import TensorflowModelIO
+from .tensorflow_runner import TensorflowRunner
+from .tf_util import is_gpu_available
 
 
 class TensorflowSolver(BaseSolver):

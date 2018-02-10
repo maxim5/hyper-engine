@@ -6,7 +6,7 @@ __author__ = 'maxim'
 import math
 from scipy import stats
 
-from nodes import *
+from .nodes import *
 
 def wrap(node, transform):
   if transform is not None:

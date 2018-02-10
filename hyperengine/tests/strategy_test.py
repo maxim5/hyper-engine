@@ -222,7 +222,7 @@ class BayesianStrategyTest(unittest.TestCase):
     if start is not None:
       self.strategy.add_point(np.asarray(start), f(start))
 
-    for i in xrange(steps):
+    for i in range(steps):
       x = self.strategy.next_proposal()
       log('selected_point=%s -> true=%.6f' % (x, f(x)))
       self.strategy.add_point(x, f(x))
@@ -332,7 +332,7 @@ class Artist(object):
 
     _, axes = plt.subplots(rows, cols)
     axes = axes.reshape(-1)
-    for j in xrange(d):
+    for j in range(d):
       axes[j].scatter(points[:, j], values, s=100, alpha=0.5)
       axes[j].set_title(self.names.get(j, str(j)))
     plt.show()
@@ -346,11 +346,11 @@ class Artist(object):
 
     _, axes = plt.subplots(rows, cols)
     axes = axes.reshape(-1)
-    for j in xrange(d):
+    for j in range(d):
       p = points[:, j]
       split = np.linspace(np.min(p), np.max(p), 10)
       bar_values = np.zeros((len(split),))
-      for k in xrange(len(split) - 1):
+      for k in range(len(split) - 1):
         interval = np.logical_and(split[k] < p, p < split[k+1])
         if np.any(interval):
           bar_values[k] = np.mean(values[interval])
