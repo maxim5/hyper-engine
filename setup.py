@@ -9,8 +9,8 @@ def read(file_):
   return open(os.path.join(os.path.dirname(__file__), file_)).read()
 
 setup(
-  name = 'hyper-engine',
-  version = '0.1.2',
+  name = 'hyperengine',
+  version = '0.1.1',
   author = 'Maxim Podkolzine',
   author_email = 'maxim.podkolzine@gmail.com',
   description = 'Python library for Bayesian hyper-parameters optimization',
