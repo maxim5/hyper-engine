@@ -1,3 +1,6 @@
 *.pyc
+*.egg-info
+dist/*
+.cache/*
 workspace.xml
 temp-*
