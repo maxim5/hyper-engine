@@ -33,9 +33,9 @@ Installation
 
 Dependencies:
 
--  `six`, `numpy`, `scipy`
--  `tensorflow` (optional)
--  `matplotlib` (optional, only for development)
+-  ``six``, ``numpy``, ``scipy``
+-  ``tensorflow`` (optional)
+-  ``matplotlib`` (optional, only for development)
 
 Compatibility:
 
