@@ -5,7 +5,7 @@ python:
   - "3.6"
 
 install:
-  - pip install six==1.11.0 numpy==1.14.0 scipy==1.0.0 tensorflow==1.5.0
+  - pip install six==1.11.0 numpy==1.14.0 scipy==1.0.0 tensorflow==1.5.0 keras==2.1.2
 
 script:
   - cd hyperengine/tests
