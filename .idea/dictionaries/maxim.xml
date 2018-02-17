@@ -2,6 +2,7 @@
   <dictionary name="maxim">
     <words>
       <w>hyperengine</w>
+      <w>keras</w>
       <w>theano</w>
     </words>
   </dictionary>
