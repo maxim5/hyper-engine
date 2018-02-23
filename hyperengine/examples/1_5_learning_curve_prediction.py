@@ -52,7 +52,7 @@ def solver_generator(params):
     'eval_batch_size': 2500,
     'epochs': 10,
     'stop_condition': curve_predictor.stop_condition(),
-    'result_metric': curve_predictor.result_metric(),
+    'reducer': curve_predictor.result_metric(),
     'evaluate_test': True,
     'eval_flexible': False,
     'save_dir': 'temp-mnist/model-zoo/example-1-5-{date}-{random_id}',
