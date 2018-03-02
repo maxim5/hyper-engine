@@ -22,5 +22,6 @@ setup(
   install_requires = ['numpy', 'scipy', 'six'],
   extras_require = {
     'tf': ['tensorflow'],
+    'keras': ['keras'],
   },
 )

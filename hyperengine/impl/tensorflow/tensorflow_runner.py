@@ -7,7 +7,7 @@ __author__ = 'maxim'
 import tensorflow as tf
 
 from ...base import *
-from ...model.base_runner import BaseRunner
+from ...model import BaseRunner
 from .tf_util import graph_vars, get_total_dim
 
 
