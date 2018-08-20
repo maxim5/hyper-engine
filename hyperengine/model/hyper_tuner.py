@@ -38,7 +38,7 @@ class HyperTuner(object):
     info('Start hyper tuner')
 
     i=0
-    while i < iterations_limit:
+    while i < self.interations_limit:
       point = self.strategy.next_proposal()
       hyper_params = self.parsed.instantiate(point)
       solver = self.solver_generator(hyper_params)
