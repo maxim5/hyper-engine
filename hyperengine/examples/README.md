@@ -39,7 +39,7 @@ All examples are complete runnable scripts and are self-contained to ease unders
  This example shows how hyper-parameters can be used in data processing.
 
 #### 4. Natutal Language Processing
- - [**Word2Vec training**](4_1_word2vec.py):
+ - [**Word2Vec training**](4_1_word2vec_embedding.py):
  an example of custom data provider to train Word2Vec embedding vectors. In addition, it shows how to use the solver
  without accuracy metric and validation.
  
