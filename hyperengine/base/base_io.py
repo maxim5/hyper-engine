@@ -14,7 +14,7 @@ from .util import str_to_dict, smart_str, random_id
 
 class BaseIO(object):
   """
-  The base class responsible for I/O operations
+  The base class responsible for I/O operations.
   """
 
   def __init__(self, **params):
@@ -72,7 +72,7 @@ class Serializable(object):
 
 class DefaultIO(BaseIO):
   """
-  A simple I/O classes and can save and load a serializable instance.
+  A simple I/O implementation: can save and load a serializable instance.
   """
 
   def __init__(self, serializable, filename, **params):
